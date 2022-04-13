@@ -1,5 +1,5 @@
 export default function parseRoute(hashRoute) {
-  if (hashRoute.startWith('#')) {
+  if (hashRoute.startsWith('#')) {
     hashRoute = hashRoute.replace('#', '');
   }
   const [path, queryString] = hashRoute.split('?');
