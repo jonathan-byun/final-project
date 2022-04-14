@@ -14,6 +14,6 @@
   align-items: center;
 }
 
-.column-sixth {
-  flex-basis: 20%;
+.column-eighth {
+  flex-basis: calc(100% / 8);
 }

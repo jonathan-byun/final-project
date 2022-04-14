@@ -7,7 +7,7 @@ export default class Navbar extends React.Component {
       <div className='navbar-container row justify-center'>
         <div id='navbar' className='row justify-between align-center'>
           <div className='row'>
-            <img className='navbar-img' src='https://cdn-icons-png.flaticon.com/512/271/271439.png' />
+            <img className='navbar-img' src='./images/carrot.png' />
             <a className='cursor-pointer home-button' href='#'>
               My Kitchen
             </a>
