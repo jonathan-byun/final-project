@@ -7,22 +7,6 @@
   background-color: #dbf4ad;
 }
 
-.row {
-  display: flex;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.align-center {
-  align-items: center;
-}
-
 .cursor-pointer:hover {
   cursor: pointer;
 }
@@ -31,12 +15,20 @@
   background-color: #d89d6a;
 }
 
+.background-rose {
+  background-color: #6d454c;
+}
+
 .margin-2rem {
   margin: 2rem;
 }
 
 .width-80 {
   width: 80%;
+}
+
+.width-100 {
+  width: 100%;
 }
 
 .karla {
@@ -79,7 +71,7 @@
 }
 
 .add-button {
-  background-color: #96adc8;
+  background-color: #6d454c;
   color: white;
   padding: 0.5rem 1rem;
   margin: 0.5rem 1rem;
@@ -88,4 +80,11 @@
 
 .header {
   margin: 2rem 1rem;
+}
+
+.category-row {
+  display: flex;
+  width: 80%;
+  background-color: #6d454c;
+  border-radius: 1rem;
 }
