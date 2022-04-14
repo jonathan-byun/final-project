@@ -1,0 +1,91 @@
+#navbar {
+  width: 80%;
+}
+
+.navbar-container {
+  width: 100%;
+  background-color: #dbf4ad;
+}
+
+.row {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.background-tan {
+  background-color: #d89d6a;
+}
+
+.margin-2rem {
+  margin: 2rem;
+}
+
+.width-80 {
+  width: 80%;
+}
+
+.karla {
+  font-family:
+    Karla,
+    sans-serif;
+}
+
+.fira {
+  font-family:
+    "Fira Sans",
+    sans-serif;
+}
+
+.nav-button {
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  text-decoration: none;
+  font-size: 1.15rem;
+  margin: 0.5rem 1rem;
+  font-family: Karla, sans-serif;
+}
+
+.home-button {
+  font-size: 1.5rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.nav-button:hover,
+.home-button:hover {
+  background-color: #a9e190;
+}
+
+.navbar-img {
+  width: 3rem;
+}
+
+.add-button {
+  background-color: #96adc8;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 1rem;
+  border-radius: 1rem;
+}
+
+.header {
+  margin: 2rem 1rem;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Home from './pages/home';
 import Inventory from './pages/inventory';
-import { parseRoute } from './lib';
+import parseRoute from './lib/parse-Route';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,6 +29,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <Home />;
+    return (<Inventory />);
   }
 }
