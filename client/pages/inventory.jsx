@@ -26,20 +26,35 @@ export default class Inventory extends React.Component {
 
   }
 
+  componentDidMount() {
+    fetch('/api/stockedItems')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          items: data
+        });
+      });
+  }
+
   render() {
+    const items = this.state.items;
+
+    const itemsList = items.map(item =>
+    <div key={item.stockedItemId} className='row justify-center'>
+      <FoodItem name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurement} showSelection={this.showSelection}/>
+    </div>
+    );
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
     return (
       <div>
         <Navbar />
-        <div className='background-rose row justify-center'>
+        <div className='background-rose row justify-center height-100vh'>
           <div className='width-80 background-tan'>
             <div className='row justify-center align-center fira'><h1 className='header'>Inventory</h1> <AddButton openModal={this.openModal} /></div>
             <div className='row justify-center'>
               <CategoryButtons images = {categoryButtonsArray} setCategory={this.setCategory} />
             </div>
-            <div className='row justify-center'>
-              <FoodItem category='fruits' quantity='8' showSelection={this.showSelection}/>
-            </div>
+            {itemsList}
           </div>
         </div>
       </div>

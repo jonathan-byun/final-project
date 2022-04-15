@@ -17,3 +17,7 @@
 .column-eighth {
   flex-basis: calc(100% / 8);
 }
+
+.height-100vh {
+  height: 100vh;
+}
