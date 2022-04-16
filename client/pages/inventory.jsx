@@ -38,10 +38,9 @@ export default class Inventory extends React.Component {
 
   render() {
     const items = this.state.items;
-
     const itemsList = items.map(item =>
     <div key={item.stockedItemId} className='row justify-center'>
-      <FoodItem name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurement} showSelection={this.showSelection}/>
+      <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} showSelection={this.showSelection}/>
     </div>
     );
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);

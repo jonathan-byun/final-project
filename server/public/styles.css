@@ -157,25 +157,32 @@
 }
 
 .food-item-img {
-  width: 6rem;
+  width: 100%;
 }
 
 .food-item-quantity {
   color: black;
-  font-size: 5rem;
+  font-size: 5vw;
+  user-select: none;
+}
+
+.foot-item-measurement {
+  font-size: 3vw;
+  margin-left: 1vw;
   user-select: none;
 }
 
 .food-item-name {
-  font-size: 3rem;
-  margin: 0 1rem;
+  flex-basis: calc(100% / 5);
+  font-size: 3vw;
+  margin: 0 1vw;
 }
 
 .plus-minus-icon-holder {
   background-color: #a9e190;
-  padding: 1rem;
+  padding: 1vw;
   border-radius: 5rem;
-  margin: 0 1rem;
+  margin: 0 1vw;
 }
 
 .plus-minus-icon-holder:hover {
