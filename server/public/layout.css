@@ -1,0 +1,27 @@
+.row {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.column-sixth {
+  flex-basis: calc(100% / 6);
+}
+
+.column-eighth {
+  flex-basis: calc(100% / 8);
+}
+
+.height-100vh {
+  height: 100vh;
+}
