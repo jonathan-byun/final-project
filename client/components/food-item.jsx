@@ -51,31 +51,30 @@ export default class FoodItem extends React.Component {
     this.state.checked ? (containerDivClass += ' background-light-beige border-solid border-color-green') : (containerDivClass += ' background-beige');
     return (
       <div className={containerDivClass}>
-        <div className='width-100 cursor-pointer' onClick={this.toggleChecked}>
-          <div className='row align-center padding-1rem'>
-            <div className='column-eighth'>
+        <div className='width-100 cursor-pointer row my-3'>
+          <div className='row align-center padding-1rem col-md' onClick={this.toggleChecked}>
+            <div className='col-md-2'>
               <img className='food-item-img' src={imgUrl}></img>
             </div>
-            <div className='food-item-name no-select'>
+            <div className='food-item-name no-select col-md-2'>
               {this.state.name}
             </div>
           </div>
+          <div className='row align-center col-md-4'>
+            <div id='minus-button' className='plus-minus-icon-holder cursor-pointer col-md-2 justify-center' onClick={this.changeQuantity} >
+              <i className="fas fa-minus fa-xl"></i>
+            </div>
+            <div className='food-item-quantity fira col-md-2'>
+              {this.state.quantity}
+            </div>
+            <div className='foot-item-measurement fira col-md-4 gx-4'>
+              {this.state.measurement}
+            </div>
+            <div id='plus-button' className='plus-minus-icon-holder cursor-pointer col-md-2' onClick={this.changeQuantity}>
+              <i className="fas fa-plus fa-xl"></i>
+            </div>
+          </div>
         </div>
-        <div className='row align-center padding-1rem column-sixth'>
-          <div id='minus-button' className='plus-minus-icon-holder cursor-pointer' onClick={this.changeQuantity} >
-            <i className="fas fa-minus fa-xl"></i>
-          </div>
-          <div className='food-item-quantity fira'>
-            {this.state.quantity}
-          </div>
-          <div className='foot-item-measurement fira'>
-            {this.state.measurement}
-          </div>
-          <div id='plus-button' className='plus-minus-icon-holder cursor-pointer' onClick={this.changeQuantity}>
-            <i className="fas fa-plus fa-xl"></i>
-          </div>
-        </div>
-
       </div>
     );
   }

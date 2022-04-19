@@ -3,7 +3,6 @@
 }
 
 .navbar-container {
-  width: 100%;
   background-color: #dbf4ad;
 }
 
@@ -61,6 +60,10 @@
 
 .border-radius-2rem {
   border-radius: 2rem;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .karla {
@@ -125,6 +128,12 @@
   padding: 0.5rem 1rem;
   margin: 0.5rem 1rem;
   border-radius: 1rem;
+  text-decoration: none;
+}
+
+.add-button:hover {
+  background-color: #8d5861;
+  color: white;
 }
 
 .header {
@@ -168,21 +177,18 @@
 
 .foot-item-measurement {
   font-size: 3vw;
-  margin-left: 1vw;
   user-select: none;
 }
 
 .food-item-name {
   flex-basis: calc(100% / 5);
   font-size: 3vw;
-  margin: 0 1vw;
 }
 
 .plus-minus-icon-holder {
   background-color: #a9e190;
   padding: 1vw;
-  border-radius: 5rem;
-  margin: 0 1vw;
+  border-radius: 9rem;
 }
 
 .plus-minus-icon-holder:hover {

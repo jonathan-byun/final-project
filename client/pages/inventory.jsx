@@ -67,7 +67,7 @@ export default class Inventory extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center height-100vh'>
           <div className='width-80 background-tan'>
-            <div className='row justify-center align-center fira'><h1 className='header'>Inventory</h1> <AddButton openModal={this.openModal} /></div>
+            <div className='row justify-center align-center fira'><h1 className='header col-md-2'>Inventory</h1> <AddButton openModal={this.openModal} /></div>
             <div className='row justify-center'>
               <CategoryButtons images = {categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems}/>
             </div>
