@@ -1,5 +1,4 @@
 import React from 'react';
-let clickable = true;
 
 export default class FoodItem extends React.Component {
   constructor(props) {
@@ -28,10 +27,9 @@ export default class FoodItem extends React.Component {
     if (e.target.id === 'plus-button' || e.target.className === 'fas fa-plus fa-xl') {
       updatedQuantity = { quantity: this.state.quantity + 1 };
     }
-    if (updatedQuantity.quantity < 0 || !clickable) {
+    if (updatedQuantity.quantity < 0) {
       return;
     }
-    clickable = false;
     fetch(`/api/stockedItemQuantity/${this.state.stockedItemId}`, {
       method: 'PATCH',
       headers: {
@@ -44,7 +42,6 @@ export default class FoodItem extends React.Component {
         this.setState({
           quantity: Number(data.quantity)
         });
-        clickable = true;
       });
   }
 
