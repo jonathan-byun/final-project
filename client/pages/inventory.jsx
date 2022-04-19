@@ -3,6 +3,7 @@ import Navbar from '../components/navbar';
 import AddButton from '../components/add-button';
 import CategoryButtons from '../components/category-buttons';
 import FoodItem from '../components/food-item';
+
 export default class Inventory extends React.Component {
   constructor(props) {
     super(props);
@@ -57,9 +58,9 @@ export default class Inventory extends React.Component {
   render() {
     const items = this.state.items;
     const itemsList = items.map(item =>
-    <div key={item.stockedItemId} className='row justify-center'>
-      <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} showSelection={this.showSelection}/>
-    </div>
+      <div key={item.stockedItemId} className='row justify-center'>
+        <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} showSelection={this.showSelection} />
+      </div>
     );
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
     return (
@@ -69,7 +70,7 @@ export default class Inventory extends React.Component {
           <div className='width-80 background-tan'>
             <div className='row justify-center align-center fira'><h1 className='header col-md-2'>Inventory</h1> <AddButton openModal={this.openModal} /></div>
             <div className='row justify-center'>
-              <CategoryButtons images = {categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems}/>
+              <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
             </div>
             {itemsList}
           </div>

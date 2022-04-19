@@ -198,3 +198,11 @@
 .plus-minus-icon-holder:active {
   transform: scale(1);
 }
+
+.background-black {
+  background-color: black;
+}
+
+.display {
+  display: block;
+}

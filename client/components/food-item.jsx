@@ -64,10 +64,10 @@ export default class FoodItem extends React.Component {
             <div id='minus-button' className='plus-minus-icon-holder cursor-pointer col-md-2 justify-center' onClick={this.changeQuantity} >
               <i className="fas fa-minus fa-xl"></i>
             </div>
-            <div className='food-item-quantity fira col-md-2'>
+            <div className='food-item-quantity fira col-md-3'>
               {this.state.quantity}
             </div>
-            <div className='foot-item-measurement fira col-md-4 gx-4'>
+            <div className='foot-item-measurement fira col-md-3'>
               {this.state.measurement}
             </div>
             <div id='plus-button' className='plus-minus-icon-holder cursor-pointer col-md-2' onClick={this.changeQuantity}>
