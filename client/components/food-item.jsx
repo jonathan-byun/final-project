@@ -1,4 +1,5 @@
 import React from 'react';
+let clickable = true;
 
 export default class FoodItem extends React.Component {
   constructor(props) {
@@ -23,26 +24,28 @@ export default class FoodItem extends React.Component {
   }
 
   changeQuantity(e) {
-    const updatedQuantity = { quantity: this.state.quantity + 1 };
+    let updatedQuantity = { quantity: this.state.quantity - 1 };
     if (e.target.id === 'plus-button' || e.target.className === 'fas fa-plus fa-xl') {
-      fetch(`/api/stockedItemQuantity/${this.state.stockedItemId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedQuantity)
-      })
-        .then(res => res.json())
-        .then(data => {
-          this.setState({
-            quantity: Number(data.quantity)
-          });
-        });
-    } else if (this.state.quantity > 0) {
-      this.setState({
-        quantity: this.state.quantity - 1
-      });
+      updatedQuantity = { quantity: this.state.quantity + 1 };
     }
+    if (updatedQuantity.quantity < 0 || !clickable) {
+      return;
+    }
+    clickable = false;
+    fetch(`/api/stockedItemQuantity/${this.state.stockedItemId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedQuantity)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          quantity: Number(data.quantity)
+        });
+        clickable = true;
+      });
   }
 
   render() {
@@ -62,7 +65,7 @@ export default class FoodItem extends React.Component {
           </div>
         </div>
         <div className='row align-center padding-1rem column-sixth'>
-          <div id='minus-button' className='plus-minus-icon-holder cursor-pointer' onClick={this.changeQuantity}>
+          <div id='minus-button' className='plus-minus-icon-holder cursor-pointer' onClick={this.changeQuantity} >
             <i className="fas fa-minus fa-xl"></i>
           </div>
           <div className='food-item-quantity fira'>

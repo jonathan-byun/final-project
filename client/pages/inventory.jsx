@@ -12,6 +12,7 @@ export default class Inventory extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.showSelection = this.showSelection.bind(this);
+    this.showAllItems = this.showAllItems.bind(this);
   }
 
   openModal() {
@@ -19,7 +20,24 @@ export default class Inventory extends React.Component {
   }
 
   setCategory(e) {
-    // when cateogry is clicked fetch items in category and set state items
+    const category = e.target.id;
+    fetch(`/api/itemsInCategory/${category}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          items: data
+        });
+      });
+  }
+
+  showAllItems() {
+    fetch('/api/stockedItems')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          items: data
+        });
+      });
   }
 
   showSelection() {
@@ -51,7 +69,7 @@ export default class Inventory extends React.Component {
           <div className='width-80 background-tan'>
             <div className='row justify-center align-center fira'><h1 className='header'>Inventory</h1> <AddButton openModal={this.openModal} /></div>
             <div className='row justify-center'>
-              <CategoryButtons images = {categoryButtonsArray} setCategory={this.setCategory} />
+              <CategoryButtons images = {categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems}/>
             </div>
             {itemsList}
           </div>

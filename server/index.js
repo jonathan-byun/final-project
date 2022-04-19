@@ -39,6 +39,33 @@ app.get('/api/stockedItems', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/itemsInCategory/:categoryName', (req, res, next) => {
+  const userId = 1;
+  const categoryName = req.params.categoryName;
+  const sql = `
+    select
+      "s"."stockedItemId",
+      "i"."name",
+      "i"."measurementUnit",
+      "i"."foodCategory",
+      "s"."quantity"
+    from "Items" as "i"
+    join "stockedItems" as "s" using ("itemId")
+    join  "Users" as "u" using ("userId")
+    where "u"."userId" = $1
+    and "i"."foodCategory" = $2;
+  `;
+
+  const params = [userId, categoryName];
+
+  db.query(sql, params)
+    .then(results => {
+      const items = results.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
 app.patch('/api/stockedItemQuantity/:stockedItemId', (req, res, next) => {
   const stockedItemId = Number(req.params.stockedItemId);
   if (!Number.isInteger(stockedItemId) || stockedItemId < 1) {
@@ -49,9 +76,9 @@ app.patch('/api/stockedItemQuantity/:stockedItemId', (req, res, next) => {
   }
 
   const { quantity } = req.body;
-  if (Number.isNaN(quantity) || quantity < 0 || !quantity) {
+  if (Number.isNaN(quantity) || quantity < 0) {
     res.status(400).json({
-      error: 'quantity must be a number greater than 0'
+      error: 'quantity must be a number greater than or equal to 0'
     });
   }
 
