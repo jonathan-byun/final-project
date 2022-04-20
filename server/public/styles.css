@@ -46,6 +46,11 @@
   width: 100%;
 }
 
+.min-height-100 {
+  min-height: 100vh;
+  height: 100%;
+}
+
 .padding-1rem {
   padding: 1rem;
 }
@@ -188,7 +193,7 @@
   user-select: none;
 }
 
-.foot-item-measurement {
+.food-item-measurement {
   font-size: 3vw;
   user-select: none;
 }

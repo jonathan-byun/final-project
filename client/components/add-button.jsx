@@ -9,29 +9,24 @@ export default class AddButton extends React.Component {
       measurementUnit: '#',
       foodCategory: 'fruits'
     };
-    this.updateMeasurement = this.updateMeasurement.bind(this);
+    this.updateItemDetails = this.updateItemDetails.bind(this);
     this.categoryClicked = this.categoryClicked.bind(this);
     this.submitItem = this.submitItem.bind(this);
-    this.updateName = this.updateName.bind(this);
-    this.updateQuantity = this.updateQuantity.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.updateMeasurementUnit = this.updateMeasurementUnit.bind(this);
   }
 
-  updateMeasurement(e) {
+  updateItemDetails(e) {
+    const name = e.target.name;
+    const value = e.target.value;
     this.setState({
-      measurementUnit: e.target.textContent
+      [name]: value
     });
   }
 
-  updateName(e) {
+  updateMeasurementUnit(e) {
     this.setState({
-      name: e.target.value
-    });
-  }
-
-  updateQuantity(e) {
-    this.setState({
-      quantity: e.target.value
+      measurementUnit: e.target.name
     });
   }
 
@@ -82,6 +77,10 @@ export default class AddButton extends React.Component {
     if (Number.isNaN(Number(this.state.quantity)) || this.state.name === '') {
       goodToSubmit = false;
     }
+    const measurements = ['#', '%', 'Grams', 'Lbs', 'Cups', 'mL'];
+    const measurementsList = measurements.map(measurement =>
+      <li key={measurement} ><a className="dropdown-item cursor-pointer" name={measurement} >{measurement}</a></li>
+    );
     return (
       <div className='col-md-1'>
         <a className='add-button cursor-pointer text-align-center' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={this.resetState}>Add</a>
@@ -93,19 +92,14 @@ export default class AddButton extends React.Component {
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body row align-center justify-center">
-                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" onChange={this.updateName} />
-                <input type="text" value={this.state.quantity} className="form-control my-4 w-75" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" onChange={this.updateQuantity} />
+                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" name="name" onChange={this.updateItemDetails} />
+                <input type="text" value={this.state.quantity} className="form-control my-4 w-75" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" name="quantity" onChange={this.updateItemDetails} />
                 <div className="dropdown w-25">
                   <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="measurementMenu" data-bs-toggle="dropdown" aria-expanded="false">
                     {this.state.measurementUnit}
                   </button>
-                  <ul className="dropdown-menu" aria-labelledby="measurementMenu" onClick={this.updateMeasurement}>
-                    <li><a className="dropdown-item cursor-pointer" >#</a></li>
-                    <li><a className="dropdown-item cursor-pointer" >%</a></li>
-                    <li><a className="dropdown-item cursor-pointer" >Grams</a></li>
-                    <li><a className="dropdown-item cursor-pointer" >Lbs</a></li>
-                    <li><a className="dropdown-item cursor-pointer" >Cups</a></li>
-                    <li><a className="dropdown-item cursor-pointer" >mL</a></li>
+                  <ul className="dropdown-menu" aria-labelledby="measurementMenu" onClick={this.updateMeasurementUnit}>
+                    {measurementsList}
                   </ul>
                 </div>
                 <div className='d-flex flex-wrap justify-center'>
