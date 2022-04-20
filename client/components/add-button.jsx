@@ -14,6 +14,7 @@ export default class AddButton extends React.Component {
     this.submitItem = this.submitItem.bind(this);
     this.updateName = this.updateName.bind(this);
     this.updateQuantity = this.updateQuantity.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
 
   updateMeasurement(e) {
@@ -58,6 +59,15 @@ export default class AddButton extends React.Component {
       });
   }
 
+  resetState() {
+    this.setState({
+      name: '',
+      quantity: 0,
+      measurementUnit: '#',
+      foodCategory: 'fruits'
+    });
+  }
+
   render() {
     const images = this.props.images;
     const listItems = images.map(image => this.state.foodCategory === image
@@ -74,7 +84,7 @@ export default class AddButton extends React.Component {
     }
     return (
       <div className='col-md-1'>
-        <a className='add-button cursor-pointer text-align-center' data-bs-toggle="modal" data-bs-target="#exampleModal">Add</a>
+        <a className='add-button cursor-pointer text-align-center' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={this.resetState}>Add</a>
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
