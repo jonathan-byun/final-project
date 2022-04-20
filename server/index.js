@@ -66,6 +66,58 @@ app.get('/api/itemsInCategory/:categoryName', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/newItem', (req, res, next) => {
+  const userId = 1;
+  const { name, quantity, measurementUnit, foodCategory } = req.body;
+  if (!name) {
+    res.status(400).json({
+      error: 'Item must have name'
+    });
+  }
+  if (!quantity || Number.isNaN(Number(quantity)) || quantity < 1) {
+    res.status(400).json({
+      error: 'Item must have quantity greater than 0'
+    });
+  }
+  if (!measurementUnit) {
+    res.status(400).json({
+      error: 'Item must have measurement unit'
+    });
+  }
+  if (!foodCategory) {
+    res.status(400).json({
+      error: 'Item must have food Category'
+    });
+  }
+
+  const sql1 = `
+    insert into "Items" ("name", "measurementUnit", "foodCategory")
+    values ($1, $2, $3)
+    returning *
+  `;
+  const params1 = [name, measurementUnit, foodCategory];
+
+  db.query(sql1, params1)
+    .then(result1 => {
+      const [newItem] = result1.rows;
+      const sql2 = `
+        insert into "stockedItems" ("quantity", "userId", "itemId")
+        values ($1, $2, $3)
+        returning *
+      `;
+
+      const params2 = [quantity, userId, newItem.itemId];
+
+      db.query(sql2, params2)
+        .then(result => {
+          const [newStockedItem] = result.rows;
+          res.json(newStockedItem);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.patch('/api/stockedItemQuantity/:stockedItemId', (req, res, next) => {
   const stockedItemId = Number(req.params.stockedItemId);
   if (!Number.isInteger(stockedItemId) || stockedItemId < 1) {

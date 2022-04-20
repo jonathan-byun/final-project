@@ -1,19 +1,5 @@
 import React from 'react';
 
-// export default function CategoryButtons(props) {
-//   const images = props.images;
-//   const listItems = images.map(image =>
-//     <div key={image} className='column-eighth row align-center'>
-//       <img className='category-button cursor-pointer' src={image} onClick={props.setCategory} />
-//     </div>
-//   );
-//   return (
-//     <div className='category-row'>
-//       {listItems}
-//     </div>
-//   );
-// }
-
 export default class CategoryButtons extends React.Component {
   constructor(props) {
     super(props);
