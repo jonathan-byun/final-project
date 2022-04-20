@@ -1,11 +1,5 @@
 import React from 'react';
 
-// export default function AddButton(props) {
-//   return (
-//     <a className='add-button cursor-pointer col-md-1 text-align-center' onClick={props.openModal}>Add</a>
-//   );
-// }
-
 export default class AddButton extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +40,22 @@ export default class AddButton extends React.Component {
     });
   }
 
-  submitItem(e) {
+  submitItem() {
+    const newItemRequest = {
+      name: this.state.name,
+      quantity: this.state.quantity,
+      measurementUnit: this.state.measurementUnit,
+      foodCategory: this.state.foodCategory
+    };
+    fetch('/api/newItem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newItemRequest)
+    })
+      .then(res => {
+        res.json();
+        this.props.showAllItems();
+      });
   }
 
   render() {
@@ -74,7 +83,7 @@ export default class AddButton extends React.Component {
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body row align-center justify-center">
-                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" onChange={this.updateName}/>
+                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" onChange={this.updateName} />
                 <input type="text" value={this.state.quantity} className="form-control my-4 w-75" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" onChange={this.updateQuantity} />
                 <div className="dropdown w-25">
                   <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="measurementMenu" data-bs-toggle="dropdown" aria-expanded="false">
