@@ -161,6 +161,19 @@
   background-color: #8d5861;
 }
 
+.add-category-button {
+  border-radius: 1rem;
+  margin: 1vh 0;
+}
+
+.add-category-button:hover {
+  transform: scale(1.2);
+}
+
+.border-blue {
+  border: solid 1px rgb(95, 200, 248);
+}
+
 .background-lighter-rose {
   background-color: #8d5861;
 }
@@ -205,4 +218,8 @@
 
 .display {
   display: block;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
