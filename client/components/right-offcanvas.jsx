@@ -18,6 +18,9 @@ export default class RightOffcanvas extends React.Component {
           <div className='d-flex justify-center'>
             <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Edit</a>
           </div>
+          <div className='d-flex justify-center'>
+            <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Add to Shop</a>
+          </div>
           <div className='d-flex justify-center w-100'>
             <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
           </div>

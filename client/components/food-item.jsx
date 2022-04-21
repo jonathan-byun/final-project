@@ -7,7 +7,7 @@ export default class FoodItem extends React.Component {
       stockedItemId: props.stockedItemId,
       name: props.name,
       quantity: parseInt(props.quantity),
-      checked: false,
+      checked: props.checked,
       category: props.category,
       measurement: props.measurement
     };
@@ -15,11 +15,8 @@ export default class FoodItem extends React.Component {
     this.changeQuantity = this.changeQuantity.bind(this);
   }
 
-  toggleChecked(e) {
-    this.setState({
-      checked: !this.state.checked
-    });
-    this.props.showSelection();
+  toggleChecked() {
+    this.props.updateSelected(this.state.stockedItemId);
   }
 
   changeQuantity(e) {

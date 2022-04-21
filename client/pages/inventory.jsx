@@ -9,11 +9,12 @@ export default class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      selected: []
     };
 
     this.setCategory = this.setCategory.bind(this);
-    this.showSelection = this.showSelection.bind(this);
+    this.updateSelected = this.updateSelected.bind(this);
     this.showAllItems = this.showAllItems.bind(this);
   }
 
@@ -38,8 +39,18 @@ export default class Inventory extends React.Component {
       });
   }
 
-  showSelection() {
-
+  updateSelected(e) {
+    if (this.state.selected.indexOf(e) === -1) {
+      this.setState(state => ({
+        selected: [...state.selected, e]
+      }));
+      return;
+    }
+    const copy = this.state.selected.concat();
+    copy.splice(this.state.selected.indexOf(e), 1);
+    this.setState({
+      selected: copy
+    });
   }
 
   componentDidMount() {
@@ -50,7 +61,7 @@ export default class Inventory extends React.Component {
     const items = this.state.items;
     const itemsList = items.map(item =>
       <div key={item.stockedItemId} className='row justify-center'>
-        <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} showSelection={this.showSelection} />
+        <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} checked={this.state.selected.includes(item.stockedItemId)} />
       </div>
     );
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
