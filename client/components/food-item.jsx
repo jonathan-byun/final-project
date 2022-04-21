@@ -7,16 +7,10 @@ export default class FoodItem extends React.Component {
       stockedItemId: props.stockedItemId,
       name: props.name,
       quantity: parseInt(props.quantity),
-      checked: props.checked,
       category: props.category,
       measurement: props.measurement
     };
-    this.toggleChecked = this.toggleChecked.bind(this);
     this.changeQuantity = this.changeQuantity.bind(this);
-  }
-
-  toggleChecked() {
-    this.props.updateSelected(this.state.stockedItemId);
   }
 
   changeQuantity(e) {
@@ -44,34 +38,30 @@ export default class FoodItem extends React.Component {
 
   render() {
     const imgUrl = `./images/${this.state.category}.png`;
-    let containerDivClass = 'width-80 row align-center border-radius-2rem margin-1rem justify-between';
-    this.state.checked ? (containerDivClass += ' background-light-beige border-solid border-color-green') : (containerDivClass += ' background-beige');
     return (
-      <div className={containerDivClass}>
-        <div className='width-100 cursor-pointer row my-3'>
-          <div className='row align-center padding-1rem col-md' onClick={this.toggleChecked}>
-            <div className='col-md-2'>
-              <img className='food-item-img' src={imgUrl}></img>
+      <div className='width-100 cursor-pointer row my-3 align-center'>
+        <div id={this.state.stockedItemId} className='row align-center col-md h-100 py-4' onClick={this.props.updateSelected}>
+          <div className='col-md-2'>
+            <img className='food-item-img' src={imgUrl}></img>
+          </div>
+          <div className='food-item-name no-select col-md-2'>
+            {this.state.name}
+          </div>
+        </div>
+        <div className='row align-center col-md-5 space-around'>
+          <div id='minus-button' className='rounded-circle background-green cursor-pointer col-md-2 transform-hover-scale-1-2 active-transform' onClick={this.changeQuantity} >
+            <i className="fas fa-minus fa-xl row justify-center py-4"></i>
+          </div>
+          <div className='food-item-quantity fira col-md-8 row justify-center align-center'>
+            <div className='col-md'>
+              {this.state.quantity}
             </div>
-            <div className='food-item-name no-select col-md-2'>
-              {this.state.name}
+            <div className='food-item-measurement fira col-md'>
+              {this.state.measurement}
             </div>
           </div>
-          <div className='row align-center col-md-5 space-around'>
-            <div id='minus-button' className='rounded-circle background-green cursor-pointer col-md-2' onClick={this.changeQuantity} >
-              <i className="fas fa-minus fa-xl row justify-center py-4"></i>
-            </div>
-            <div className='food-item-quantity fira col-md-8 row justify-center align-center'>
-              <div className='col-md'>
-                {this.state.quantity}
-              </div>
-              <div className='food-item-measurement fira col-md'>
-                {this.state.measurement}
-              </div>
-            </div>
-            <div className='rounded-circle background-green cursor-pointer col-md-2 ' onClick={this.changeQuantity}>
-              <i id='plus-button' className="fas fa-plus fa-xl row justify-center py-4"></i>
-            </div>
+          <div className='rounded-circle background-green cursor-pointer col-md-2 transform-hover-scale-1-2 active-transform' onClick={this.changeQuantity}>
+            <i id='plus-button' className="fas fa-plus fa-xl row justify-center py-4"></i>
           </div>
         </div>
       </div>

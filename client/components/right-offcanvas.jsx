@@ -10,7 +10,7 @@ export default class RightOffcanvas extends React.Component {
 
   render() {
     return (
-      <div className="offcanvas offcanvas-end show" data-bs-scroll="true" data-bs-backdrop="false" tabIndex="-1" id="offcanvasScrolling" aria-labelledby="editOffCanvas">
+      <div className="offcanvas offcanvas-end show visible" data-bs-scroll="true" data-bs-backdrop="false" tabIndex="-1" id="offcanvasScrolling" aria-labelledby="editOffCanvas">
         <div className="offcanvas-header show background-rose d-flex justify-center border-start border-secondary">
           <h5 className="offcanvas-title show updock fs-1 fw-bolder text-white text-center" id="editOffCanvas">Selection</h5>
         </div>
