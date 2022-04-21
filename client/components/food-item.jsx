@@ -61,8 +61,8 @@ export default class FoodItem extends React.Component {
             </div>
           </div>
           <div className='row align-center col-md-5 space-around'>
-            <div id='minus-button' className='plus-minus-icon-holder cursor-pointer col-md-2 row justify-center px-0' onClick={this.changeQuantity} >
-              <i className="fas fa-minus fa-xl px-2 py-4 row justify-center"></i>
+            <div id='minus-button' className='rounded-circle background-green cursor-pointer col-md-2' onClick={this.changeQuantity} >
+              <i className="fas fa-minus fa-xl row justify-center py-4"></i>
             </div>
             <div className='food-item-quantity fira col-md-8 row justify-center align-center'>
               <div className='col-md'>
@@ -72,8 +72,8 @@ export default class FoodItem extends React.Component {
                 {this.state.measurement}
               </div>
             </div>
-            <div id='plus-button' className='plus-minus-icon-holder cursor-pointer col-md-2 ' onClick={this.changeQuantity}>
-              <i className="fas fa-plus fa-xl row justify-center py-4"></i>
+            <div className='rounded-circle background-green cursor-pointer col-md-2 ' onClick={this.changeQuantity}>
+              <i id='plus-button' className="fas fa-plus fa-xl row justify-center py-4"></i>
             </div>
           </div>
         </div>

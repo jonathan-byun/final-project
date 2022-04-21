@@ -3,6 +3,7 @@ import Navbar from '../components/navbar';
 import AddButton from '../components/add-button';
 import CategoryButtons from '../components/category-buttons';
 import FoodItem from '../components/food-item';
+import RightOffcanvas from '../components/right-offcanvas';
 
 export default class Inventory extends React.Component {
   constructor(props) {
@@ -10,14 +11,10 @@ export default class Inventory extends React.Component {
     this.state = {
       items: []
     };
-    this.openModal = this.openModal.bind(this);
+
     this.setCategory = this.setCategory.bind(this);
     this.showSelection = this.showSelection.bind(this);
     this.showAllItems = this.showAllItems.bind(this);
-  }
-
-  openModal() {
-
   }
 
   setCategory(e) {
@@ -46,13 +43,7 @@ export default class Inventory extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/stockedItems')
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          items: data
-        });
-      });
+    this.showAllItems();
   }
 
   render() {
@@ -68,10 +59,11 @@ export default class Inventory extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
-            <div className='row justify-center align-center fira'><h1 className='header col-md-2'>Inventory</h1> <AddButton openModal={this.openModal} images={categoryButtonsArray} showAllItems={this.showAllItems} /></div>
+            <div className='row justify-center align-center fira'><h1 className='header col-md-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} /></div>
             <div className='row justify-center'>
               <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
             </div>
+            <RightOffcanvas />
             {itemsList}
           </div>
         </div>
