@@ -14,6 +14,7 @@ export default class RightOffcanvas extends React.Component {
     this.categoryClicked = this.categoryClicked.bind(this);
     this.updateStatevalue = this.updateStatevalue.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   submitEdit() {
@@ -34,7 +35,20 @@ export default class RightOffcanvas extends React.Component {
   }
 
   deleteItem() {
-
+    const deleteArray = this.props.numberSelected;
+    const deleteRequest = {
+      idArray: deleteArray
+    };
+    fetch('/api/deleteStockedItems', {
+      method: 'delete',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(deleteRequest)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.props.showAllItems();
+      })
+      .catch(err => console.error(err));
   }
 
   updateItemDetails(e) {
@@ -103,7 +117,7 @@ export default class RightOffcanvas extends React.Component {
               <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Add to Shop</a>
             </div>
             <div className='d-flex justify-center w-100'>
-              <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
+              <a onClick={this.deleteItem} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
             </div>
             <div className='d-flex justify-center w-100'>
               <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Recipize</a>

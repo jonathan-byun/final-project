@@ -236,27 +236,37 @@ app.patch('/api/stockedItemDetails/:stockedItemId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/deleteStockedItem/:stockedItemId', (req, res, next) => {
+app.delete('/api/deleteStockedItems', (req, res, next) => {
   const userId = 1;
-  const id = req.params.stockedItemId;
+  const idArray = (req.body.idArray);
+
+  if (!idArray) {
+    res.status(400).json({
+      error: 'idArray cannot be empty'
+    });
+  }
   const sql = `
     delete from "stockedItems"
       where "userId" = $1
-      and "stockedItemId" = $2
-    returning "itemId";
+      and "stockedItemId" = any($2::int[])
+    returning *;
   `;
-  const params = [userId, id];
+  const params = [userId, idArray];
 
   db.query(sql, params)
     .then(result1 => {
-      const itemId = result1.rows[0].itemId;
+      const itemId = result1.rows;
+      const deleteItemArray = [];
+      for (let i = 0; i < itemId.length; i++) {
+        deleteItemArray.push(itemId[i].itemId);
+      }
       const sql2 = `
         delete from "Items"
-          where "itemId" = $1
+          where "itemId" = any($1::int[])
         returning *
       `;
 
-      const params2 = [itemId];
+      const params2 = [deleteItemArray];
 
       db.query(sql2, params2)
         .then(result2 => {
