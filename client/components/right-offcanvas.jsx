@@ -13,6 +13,28 @@ export default class RightOffcanvas extends React.Component {
     this.updateMeasurementUnit = this.updateMeasurementUnit.bind(this);
     this.categoryClicked = this.categoryClicked.bind(this);
     this.updateStatevalue = this.updateStatevalue.bind(this);
+    this.submitEdit = this.submitEdit.bind(this);
+  }
+
+  submitEdit() {
+    const editPatchRequest = {
+      name: this.state.name,
+      quantity: this.state.quantity,
+      measurementUnit: this.state.measurementUnit,
+      foodCategory: this.state.foodCategory
+    };
+    fetch(`/api/stockedItemDetails/${this.props.numberSelected[0]}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editPatchRequest)
+    })
+      .then(res => res.json())
+      .then(data => this.props.showAllItems())
+      .catch(err => console.error(err));
+  }
+
+  deleteItem() {
+
   }
 
   updateItemDetails(e) {
@@ -36,6 +58,17 @@ export default class RightOffcanvas extends React.Component {
   }
 
   updateStatevalue() {
+    fetch(`/api/stockedItemAt/${this.props.numberSelected[0]}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          name: data.name,
+          quantity: data.quantity,
+          measurementUnit: data.measurementUnit,
+          foodCategory: data.foodCategory
+        });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {

@@ -16,6 +16,13 @@ export default class Inventory extends React.Component {
     this.setCategory = this.setCategory.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
     this.showAllItems = this.showAllItems.bind(this);
+    this.resetSelected = this.resetSelected.bind(this);
+  }
+
+  resetSelected() {
+    this.setState({
+      selected: []
+    });
   }
 
   setCategory(e) {
@@ -26,7 +33,8 @@ export default class Inventory extends React.Component {
         this.setState({
           items: data
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   showAllItems() {
@@ -36,7 +44,8 @@ export default class Inventory extends React.Component {
         this.setState({
           items: data
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   updateSelected(e) {
@@ -61,7 +70,8 @@ export default class Inventory extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify()
-    });
+    })
+      .catch(err => console.error(err));
   }
 
   componentDidMount() {
@@ -72,15 +82,15 @@ export default class Inventory extends React.Component {
     const items = this.state.items;
     const itemsList = items.map(item => this.state.selected.includes(item.stockedItemId)
       ? <div key={item.stockedItemId} className='row justify-center'>
-          <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-light-beige border-solid border-color-green'>
-            <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
-          </div>
+        <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-light-beige border-solid border-color-green'>
+          <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
         </div>
+      </div>
       : <div key={item.stockedItemId} className='row justify-center'>
-          <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-beige'>
-            <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
-          </div>
+        <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-beige'>
+          <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
         </div>
+      </div>
     );
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
     return (
@@ -92,7 +102,7 @@ export default class Inventory extends React.Component {
             <div className='row justify-center'>
               <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
             </div>
-            {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray}/>}
+            {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} />}
             {itemsList}
           </div>
         </div>

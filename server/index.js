@@ -69,7 +69,7 @@ app.get('/api/itemsInCategory/:categoryName', (req, res, next) => {
 app.get('/api/stockedItemAt/:stockedItemId', (req, res, next) => {
   const userId = 1;
   const stockedItemId = req.params.stockedItemId;
-  if (!Number.isInteger(stockedItemId) || stockedItemId < 1) {
+  if (!Number.isInteger(Number(stockedItemId)) || stockedItemId < 1) {
     res.status(400).json({
       error: 'stockedItemId must be a positive integer'
     });
@@ -91,9 +91,10 @@ app.get('/api/stockedItemAt/:stockedItemId', (req, res, next) => {
 
   db.query(sql, params)
     .then(results => {
-      const items = results.rows;
+      const [items] = results.rows;
       res.json(items);
-    });
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/newItem', (req, res, next) => {
@@ -221,7 +222,46 @@ app.patch('/api/stockedItemDetails/:stockedItemId', (req, res, next) => {
       db.query(sql2, params2)
         .then(result => {
           const [newStockedItem] = result.rows;
-          res.json(newStockedItem);
+          const responseObject = {
+            name: newStockedItem.name,
+            quantity: newItem.quantity,
+            measurementUnit: newStockedItem.measurementUnit,
+            foodCategory: newStockedItem.foodCategory,
+            stockedItemId: newItem.stockedItemId
+          };
+          res.json(responseObject);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/deleteStockedItem/:stockedItemId', (req, res, next) => {
+  const userId = 1;
+  const id = req.params.stockedItemId;
+  const sql = `
+    delete from "stockedItems"
+      where "userId" = $1
+      and "stockedItemId" = $2
+    returning "itemId";
+  `;
+  const params = [userId, id];
+
+  db.query(sql, params)
+    .then(result1 => {
+      const itemId = result1.rows[0].itemId;
+      const sql2 = `
+        delete from "Items"
+          where "itemId" = $1
+        returning *
+      `;
+
+      const params2 = [itemId];
+
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [deletedItem] = result2.rows;
+          res.json(deletedItem);
         })
         .catch(err => next(err));
     })
