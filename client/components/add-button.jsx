@@ -115,7 +115,8 @@ export default class AddButton extends React.Component {
               </div>
             </div>
           </div>
-        </div></div>
+        </div>
+      </div>
     );
   }
 }

@@ -54,6 +54,16 @@ export default class Inventory extends React.Component {
     });
   }
 
+  editSelected() {
+    fetch(`/api/stockedItemDetails/${this.state.selected[0]}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify()
+    });
+  }
+
   componentDidMount() {
     this.showAllItems();
   }
@@ -82,7 +92,7 @@ export default class Inventory extends React.Component {
             <div className='row justify-center'>
               <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
             </div>
-            {this.state.selected.length > 0 && <RightOffcanvas />}
+            {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray}/>}
             {itemsList}
           </div>
         </div>
