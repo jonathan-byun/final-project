@@ -47,6 +47,7 @@ export default class RightOffcanvas extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.props.showAllItems();
+        this.props.resetSelected();
       })
       .catch(err => console.error(err));
   }
