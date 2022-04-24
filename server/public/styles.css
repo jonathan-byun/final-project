@@ -243,3 +243,8 @@
 .visible {
   visibility: visible;
 }
+
+.back-button {
+  top: 15%;
+  right: 30%;
+}

@@ -25,8 +25,10 @@ export default class Inventory extends React.Component {
 
   resetResults() {
     this.setState({
+      selected: [],
       results: []
     });
+    window.scrollTo(0, 0);
   }
 
   searchRecipes() {
@@ -137,9 +139,12 @@ export default class Inventory extends React.Component {
           <div className='width-80 background-tan'>
             {this.state.results.length > 1
               ? <div>
-                <h1 className='header col-md-2'>Anything Good?</h1>
-                {recipeItemList}
+                <div className='d-flex justify-content-center align-center'>
+                  <h1 className='header col-md-4'>Anything Good?</h1>
+                  <a onClick={this.resetResults} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder position-fixed back-button'>Back</a>
                 </div>
+                {recipeItemList}
+              </div>
               : <div>
                 <div className='row justify-center align-center fira'>
                   <h1 className='header col-md-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
