@@ -4,19 +4,55 @@ import AddButton from '../components/add-button';
 import CategoryButtons from '../components/category-buttons';
 import FoodItem from '../components/food-item';
 import RightOffcanvas from '../components/right-offcanvas';
+import RecipeItem from '../components/recipe-item';
 
 export default class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      selected: []
+      selected: [],
+      results: []
     };
 
     this.setCategory = this.setCategory.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
     this.showAllItems = this.showAllItems.bind(this);
     this.resetSelected = this.resetSelected.bind(this);
+    this.searchRecipes = this.searchRecipes.bind(this);
+    this.resetResults = this.resetResults.bind(this);
+  }
+
+  resetResults() {
+    this.setState({
+      results: []
+    });
+  }
+
+  searchRecipes() {
+    const searchArray = [];
+    for (let i = 0; i < this.state.selected.length; i++) {
+      const chosen = this.state.items.find(object => object.stockedItemId === this.state.selected[i]);
+      if (chosen !== undefined) {
+        searchArray.push(chosen.name);
+      }
+    }
+    let searchString = '';
+    for (let i = 0; i < searchArray.length; i++) {
+      if (i === 0) {
+        searchString = searchArray[i];
+      } else {
+        searchString = searchString + '%20' + searchArray[i];
+      }
+    }
+    fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${searchString}&app_id=d5d20c06&app_key=549162c7a149851b2151a7de9ad9ee1d`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          results: data.hits
+        });
+      })
+      .catch(err => console.error(err));
   }
 
   resetSelected() {
@@ -79,6 +115,7 @@ export default class Inventory extends React.Component {
   }
 
   render() {
+    const recipeItemList = this.state.results.map(recipeObject => <RecipeItem key={recipeObject.recipe.label} recipe={recipeObject} />);
     const items = this.state.items;
     const itemsList = items.map(item => this.state.selected.includes(item.stockedItemId)
       ? <div key={item.stockedItemId} className='row justify-center'>
@@ -98,12 +135,22 @@ export default class Inventory extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
-            <div className='row justify-center align-center fira'><h1 className='header col-md-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} /></div>
-            <div className='row justify-center'>
-              <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
-            </div>
-            {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} />}
-            {itemsList}
+            {this.state.results.length > 1
+              ? <div>
+                <h1 className='header col-md-2'>Anything Good?</h1>
+                {recipeItemList}
+                </div>
+              : <div>
+                <div className='row justify-center align-center fira'>
+                  <h1 className='header col-md-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
+                </div>
+                <div className='row justify-center'>
+                  <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
+                </div>
+                {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
+                {itemsList}
+              </div>
+            }
           </div>
         </div>
       </div>

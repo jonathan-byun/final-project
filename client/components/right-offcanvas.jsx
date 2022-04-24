@@ -121,7 +121,7 @@ export default class RightOffcanvas extends React.Component {
               <a onClick={this.deleteItem} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
             </div>
             <div className='d-flex justify-center w-100'>
-              <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Recipize</a>
+              <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2' onClick={this.props.searchRecipes}>Recipize</a>
             </div>
           </div>
         </div>
