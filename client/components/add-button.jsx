@@ -51,7 +51,8 @@ export default class AddButton extends React.Component {
       .then(res => {
         res.json();
         this.props.showAllItems();
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   resetState() {
@@ -115,7 +116,8 @@ export default class AddButton extends React.Component {
               </div>
             </div>
           </div>
-        </div></div>
+        </div>
+      </div>
     );
   }
 }

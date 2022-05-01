@@ -30,6 +30,10 @@
   background-color: rgb(246, 250, 198);
 }
 
+.background-green {
+  background-color: #a9e190;
+}
+
 .margin-1rem {
   margin: 1rem;
 }
@@ -95,6 +99,10 @@
 
 .no-select {
   user-select: none;
+}
+
+.text-decoration-none {
+  text-decoration: none;
 }
 
 .nav-button {
@@ -203,11 +211,6 @@
   font-size: 3vw;
 }
 
-.plus-minus-icon-holder {
-  background-color: #a9e190;
-  border-radius: 9rem;
-}
-
 .plus-minus-icon-holder:hover {
   transform: scale(1.2);
 }
@@ -226,4 +229,22 @@
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.transform-hover-scale-1-2:hover {
+  transform: scale(1.2);
+  transition: all 0.2s;
+}
+
+.active-transform:active {
+  transform: scale(1);
+}
+
+.visible {
+  visibility: visible;
+}
+
+.back-button {
+  top: 15%;
+  right: 30%;
 }
