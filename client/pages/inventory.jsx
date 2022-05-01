@@ -47,12 +47,19 @@ export default class Inventory extends React.Component {
         searchString = searchString + '%20' + searchArray[i];
       }
     }
-    fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${searchString}&app_id=d5d20c06&app_key=549162c7a149851b2151a7de9ad9ee1d`)
+    fetch('/api/getEdamam/')
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          results: data.hits
-        });
+        const edamamApiId = data.id;
+        const edamamApiKey = data.key;
+        fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${searchString}&app_id=${edamamApiId}&app_key=${edamamApiKey}`)
+          .then(res => res.json())
+          .then(data => {
+            this.setState({
+              results: data.hits
+            });
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
   }
