@@ -3,6 +3,7 @@ const express = require('express');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const db = require('./db');
+require('dotenv/config');
 
 const app = express();
 
@@ -239,7 +240,6 @@ app.patch('/api/stockedItemDetails/:stockedItemId', (req, res, next) => {
 app.delete('/api/deleteStockedItems', (req, res, next) => {
   const userId = 1;
   const idArray = (req.body.idArray);
-
   if (!idArray) {
     res.status(400).json({
       error: 'idArray cannot be empty'
@@ -276,6 +276,16 @@ app.delete('/api/deleteStockedItems', (req, res, next) => {
         .catch(err => next(err));
     })
     .catch(err => next(err));
+});
+
+app.get('/api/getEdamam', (req, res, next) => {
+  const edamamApiId = process.env.EDAMAM_API_ID;
+  const edamamApiKey = process.env.EDAMAM_API_KEY;
+  const response = {
+    id: edamamApiId,
+    key: edamamApiKey
+  };
+  res.json(response);
 });
 
 app.use(errorMiddleware);
