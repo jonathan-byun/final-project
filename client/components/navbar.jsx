@@ -14,7 +14,6 @@ export default class Navbar extends React.Component {
           </div>
           <div className='row col-md-9 align-center'>
             <NavbarButton name='Inventory' />
-            <NavbarButton name='Recipes' />
             <NavbarButton name='Favorites' />
             <NavbarButton name='Shopping List' />
             <NavbarButton name='Calendar' />
