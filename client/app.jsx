@@ -1,7 +1,6 @@
 import React from 'react';
 import Inventory from './pages/inventory';
 import parseRoute from './lib/parse-Route';
-import Recipes from './pages/recipes';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,9 +25,7 @@ export default class App extends React.Component {
     if (route.path === 'Inventory') {
       return <Inventory />;
     }
-    if (route.path === 'Recipes') {
-      return <Recipes />;
-    }
+    return <Inventory />;
   }
 
   render() {
