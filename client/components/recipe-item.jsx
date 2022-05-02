@@ -58,11 +58,30 @@ export default class RecipeItem extends React.Component {
     const url = recipe.url;
 
     const urlButton =
-      <div className='d-flex justify-content-center'>
+      <div buttontype='url' className='d-flex justify-content-center'>
         <a className='background-green p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder' href={url} target="_blank" rel="noopener noreferrer">Make it!</a>
       </div>;
 
-    const recipeDetailsArray = [ingredients, macros, urlButton];
+    const favoriteButton =
+      <div buttontype='favorite' className='d-flex justify-content-center'>
+        <a className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Favorite!</a>
+      </div>;
+
+    const planButton =
+      <div buttontype='plan' className='d-flex justify-content-center'>
+        <a className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
+      </div>;
+
+    const buttonsArray = [urlButton, favoriteButton, planButton];
+    const buttonsList = buttonsArray.map(button => {
+      return (
+        <div key={button.props.buttontype} className='my-2'>
+          {button}
+        </div>
+      );
+    });
+
+    const recipeDetailsArray = [ingredients, macros, buttonsList];
     const recipeDetails = recipeDetailsArray.map(detail =>
       <div key={recipeDetailsArray.indexOf(detail)} className='mb-4 p-2'>
         {detail}
