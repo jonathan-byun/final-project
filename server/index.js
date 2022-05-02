@@ -287,6 +287,35 @@ app.get('/api/getEdamam', (req, res, next) => {
   res.json(response);
 });
 
+app.post('/api/favorites', (req, res, next) => {
+  const userId = 1;
+  const { recipeUri } = req.body;
+  const sql = `
+    insert into "Recipes" ("recipeUri")
+    values ($1)
+    returning "recipeId"
+  `;
+  const params = [recipeUri];
+
+  db.query(sql, params)
+    .then(result => {
+      const [returningiD] = result.rows;
+      const sql2 = `
+        insert into "favoritedRecipes" ("userId", "recipeId")
+        values ($1, $2)
+        returning *
+      `;
+      const params2 = [userId, returningiD.recipeId];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [favoritedReturn] = result2.rows;
+          res.json(favoritedReturn);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

@@ -7,6 +7,22 @@ export default class RecipeItem extends React.Component {
       clicked: false
     };
     this.handleClick = this.handleClick.bind(this);
+    this.addToFavorite = this.addToFavorite.bind(this);
+  }
+
+  addToFavorite(e) {
+    const recipeUri = e.target.dataset.uri;
+    const splitUri = recipeUri.split('_');
+    const uri = splitUri[1];
+    const postObject = {
+      recipeUri: uri
+    };
+    fetch('/api/favorites', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(postObject)
+    })
+      .then(res => res.json);
   }
 
   handleClick() {
@@ -20,9 +36,11 @@ export default class RecipeItem extends React.Component {
     const name = recipe.label;
     const imgUrl = recipe.image;
 
-    const ingredientsList = recipe.ingredients.map(ingredient =>
-      <li key={recipe.ingredients.indexOf(ingredient)}>{ingredient.text}</li>
-    );
+    const ingredientsList = recipe.ingredients.map(ingredient => {
+      return (
+        <li key={ingredient.food}>{ingredient.text}</li>
+      );
+    });
 
     const ingredients =
       <div>
@@ -64,7 +82,7 @@ export default class RecipeItem extends React.Component {
 
     const favoriteButton =
       <div buttontype='favorite' className='d-flex justify-content-center'>
-        <a className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Favorite!</a>
+        <a data-uri={recipe.uri} onClick={this.addToFavorite} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Favorite!</a>
       </div>;
 
     const planButton =
@@ -82,11 +100,14 @@ export default class RecipeItem extends React.Component {
     });
 
     const recipeDetailsArray = [ingredients, macros, buttonsList];
-    const recipeDetails = recipeDetailsArray.map(detail =>
-      <div key={recipeDetailsArray.indexOf(detail)} className='mb-4 p-2'>
-        {detail}
-      </div>
-    );
+    const recipeDetails = recipeDetailsArray.map(detail => {
+      return (
+        <div key={recipeDetailsArray.indexOf(detail)} className='mb-4 p-2'>
+          {detail}
+        </div>
+      );
+    });
+
     return (
       <div>
         <div className='row justify-center'>
