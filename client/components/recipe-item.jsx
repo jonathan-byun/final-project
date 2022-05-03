@@ -82,7 +82,7 @@ export default class RecipeItem extends React.Component {
 
     const favoriteButton =
       <div buttontype='favorite' className='d-flex justify-content-center'>
-        <a data-uri={recipe.uri} onClick={this.addToFavorite} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Favorite!</a>
+        <a data-uri={recipe.uri} onClick={this.addToFavorite} data-bs-toggle="modal" data-bs-target="#favoriteConfirmationModal" className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Favorite!</a>
       </div>;
 
     const planButton =
@@ -129,6 +129,22 @@ export default class RecipeItem extends React.Component {
             </div>
           </div>
         }
+        <div className="modal fade" id="favoriteConfirmationModal" tabIndex="-1" aria-labelledby="favoriteConfirmationModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="favoriteConfirmationModal">~Added~</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                {recipe.label} added!
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn background-blue" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
