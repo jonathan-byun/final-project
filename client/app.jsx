@@ -1,6 +1,7 @@
 import React from 'react';
 import Inventory from './pages/inventory';
 import parseRoute from './lib/parse-Route';
+import Favorites from './pages/favorites';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'Inventory') {
       return <Inventory />;
+    }
+    if (route.path === 'Favorites') {
+      return <Favorites />;
     }
     return <Inventory />;
   }

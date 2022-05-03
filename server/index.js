@@ -316,6 +316,32 @@ app.post('/api/favorites', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/getfavorites', (req, res, next) => {
+  const userId = 1;
+  const sql = `
+    select
+      *
+    from "favoritedRecipes"
+    join "Recipes" using ("recipeId")
+    where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(results => {
+      const favorites = [];
+      for (const value of results.rows) {
+        favorites.push(
+          {
+            favoriteId: value.favoritedRecipeId,
+            uri: value.recipeUri
+          }
+        );
+      }
+      res.json(favorites);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
