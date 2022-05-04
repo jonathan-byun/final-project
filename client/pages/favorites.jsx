@@ -9,6 +9,21 @@ export default class Favorites extends React.Component {
       items: []
     };
     this.showFavorites = this.showFavorites.bind(this);
+    this.removefromFavorite = this.removefromFavorite.bind(this);
+  }
+
+  removefromFavorite(e) {
+    fetch(`/api/removefavorite/${e.target.dataset.favoriteid}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.showFavorites();
+      })
+      .catch(err => console.error(err));
   }
 
   showFavorites() {
@@ -30,7 +45,7 @@ export default class Favorites extends React.Component {
     const favoriteRecipesList = this.state.items.map(result => {
       return (
         <div key={result.favoriteId}>
-          <FavoriteRecipeItem uri = {result.uri} favoriteid = {result.favoriteId} />
+          <FavoriteRecipeItem uri={result.uri} favoriteid={result.favoriteId} removefromFavorite={this.removefromFavorite} />
         </div>
       );
     });

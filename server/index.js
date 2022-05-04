@@ -342,6 +342,36 @@ app.get('/api/getfavorites', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/removefavorite/:id', (req, res, next) => {
+  const userId = 1;
+  const favoritedRecipeId = req.params.id;
+  const sql = `
+    delete from "favoritedRecipes"
+      where "userId" = $1
+      and "favoritedRecipeId" = $2
+    returning "recipeId"
+  `;
+  const params = [userId, favoritedRecipeId];
+
+  db.query(sql, params)
+    .then(result => {
+      const recipeId = result.rows[0].recipeId;
+      const sql2 = `
+        delete from "Recipes"
+          where "recipeId" = $1
+        returning *
+      `;
+      const params2 = [recipeId];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [deletedRecipe] = result2.rows;
+          res.json(deletedRecipe);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
