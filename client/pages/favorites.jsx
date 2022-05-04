@@ -8,9 +8,10 @@ export default class Favorites extends React.Component {
     this.state = {
       items: []
     };
+    this.showFavorites = this.showFavorites.bind(this);
   }
 
-  componentDidMount() {
+  showFavorites() {
     fetch('/api/getfavorites')
       .then(res => res.json())
       .then(data => {
@@ -21,11 +22,15 @@ export default class Favorites extends React.Component {
       .catch(err => console.error(err));
   }
 
+  componentDidMount() {
+    this.showFavorites();
+  }
+
   render() {
     const favoriteRecipesList = this.state.items.map(result => {
       return (
         <div key={result.favoriteId}>
-          <FavoriteRecipeItem uri = {result.uri} favoriteId = {result.favoriteId} />
+          <FavoriteRecipeItem uri = {result.uri} favoriteid = {result.favoriteId} />
         </div>
       );
     });
@@ -34,7 +39,12 @@ export default class Favorites extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
-            {favoriteRecipesList}
+            <div className='d-flex justify-content-center my-3 fs-1 karla'>
+              Favorites
+            </div>
+            <div className='my-3'>
+              {favoriteRecipesList}
+            </div>
           </div>
         </div>
       </div>

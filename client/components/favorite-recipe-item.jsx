@@ -85,7 +85,7 @@ export default class FavoriteRecipeItem extends React.Component {
 
     const unfavoriteButton =
       <div buttontype='favorite' className='d-flex justify-content-center my-2'>
-        <a data-favoriteId={this.props.favoriteId} onClick={this.addToFavorite} data-bs-toggle="modal" data-bs-target="#favoriteConfirmationModal" className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Remove</a>
+        <a data-favoriteid={this.props.favoriteid} onClick={this.addToFavorite} data-bs-toggle="modal" data-bs-target="#favoriteConfirmationModal" className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Remove</a>
       </div>;
 
     const planButton =
