@@ -148,7 +148,7 @@ export default class Inventory extends React.Component {
               ? <div>
                 <div className='d-flex justify-content-center align-center'>
                   <h1 className='header col-md-4'>Anything Good?</h1>
-                  <a onClick={this.resetResults} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder position-fixed back-button'>Back</a>
+                  <a onClick={this.resetResults} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder back-button'>Back</a>
                 </div>
                 {recipeItemList}
               </div>

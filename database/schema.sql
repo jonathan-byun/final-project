@@ -34,11 +34,7 @@ CREATE TABLE "Items" (
 
 CREATE TABLE "Recipes" (
 	"recipeId" serial NOT NULL,
-	"name" TEXT NOT NULL,
-	"recipeUrl" TEXT NOT NULL,
-	"imageUrl" TEXT NOT NULL,
-	"ingredients" TEXT NOT NULL,
-	"nutritionInfo" TEXT NOT NULL,
+	"recipeUri" TEXT NOT NULL,
 	CONSTRAINT "Recipes_pk" PRIMARY KEY ("recipeId")
 ) WITH (
   OIDS=FALSE

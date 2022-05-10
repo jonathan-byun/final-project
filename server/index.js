@@ -33,7 +33,6 @@ app.get('/api/stockedItems', (req, res, next) => {
   db.query(sql, params)
     .then(results => {
       const items = results.rows;
-
       res.json(items);
     })
     .catch(err => next(err));
@@ -285,6 +284,116 @@ app.get('/api/getEdamam', (req, res, next) => {
     key: edamamApiKey
   };
   res.json(response);
+});
+
+app.post('/api/favorites', (req, res, next) => {
+  const userId = 1;
+  const { recipeUri } = req.body;
+  const sql = `
+    insert into "Recipes" ("recipeUri")
+    values ($1)
+    returning "recipeId"
+  `;
+  const params = [recipeUri];
+
+  db.query(sql, params)
+    .then(result => {
+      const [returningiD] = result.rows;
+      const sql2 = `
+        insert into "favoritedRecipes" ("userId", "recipeId")
+        values ($1, $2)
+        returning *
+      `;
+      const params2 = [userId, returningiD.recipeId];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [favoritedReturn] = result2.rows;
+          res.json(favoritedReturn);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/getfavorites', (req, res, next) => {
+  const userId = 1;
+  const sql = `
+    select
+      *
+    from "favoritedRecipes"
+    join "Recipes" using ("recipeId")
+    where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(results => {
+      const favorites = [];
+      for (const value of results.rows) {
+        favorites.push(
+          {
+            favoriteId: value.favoritedRecipeId,
+            uri: value.recipeUri
+          }
+        );
+      }
+      res.json(favorites);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/removefavorite/:id', (req, res, next) => {
+  const userId = 1;
+  const favoritedRecipeId = req.params.id;
+  const sql = `
+    delete from "favoritedRecipes"
+      where "userId" = $1
+      and "favoritedRecipeId" = $2
+    returning "recipeId"
+  `;
+  const params = [userId, favoritedRecipeId];
+
+  db.query(sql, params)
+    .then(result => {
+      const recipeId = result.rows[0].recipeId;
+      const sql2 = `
+        delete from "Recipes"
+          where "recipeId" = $1
+        returning *
+      `;
+      const params2 = [recipeId];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [deletedRecipe] = result2.rows;
+          res.json(deletedRecipe);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/neededItems', (req, res, next) => {
+  const userId = 1;
+
+  const sql = `
+    select
+      "n"."neededItemId",
+      "i"."name",
+      "i"."measurementUnit",
+      "i"."foodCategory"
+    from "Items" as "i"
+    join "neededItems" as "n" using ("itemId")
+    join  "Users" as "u" using ("userId")
+    where "u"."userId" = $1;
+  `;
+
+  const params = [userId];
+
+  db.query(sql, params)
+    .then(results => {
+      const items = results.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
