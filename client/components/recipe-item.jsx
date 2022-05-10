@@ -137,7 +137,7 @@ export default class RecipeItem extends React.Component {
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body">
-                {recipe.label} added!
+                Recipe added!
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn background-blue" data-bs-dismiss="modal">Close</button>

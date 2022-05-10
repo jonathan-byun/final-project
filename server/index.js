@@ -33,7 +33,6 @@ app.get('/api/stockedItems', (req, res, next) => {
   db.query(sql, params)
     .then(results => {
       const items = results.rows;
-
       res.json(items);
     })
     .catch(err => next(err));
@@ -368,6 +367,31 @@ app.delete('/api/removefavorite/:id', (req, res, next) => {
           res.json(deletedRecipe);
         })
         .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/neededItems', (req, res, next) => {
+  const userId = 1;
+
+  const sql = `
+    select
+      "n"."neededItemId",
+      "i"."name",
+      "i"."measurementUnit",
+      "i"."foodCategory"
+    from "Items" as "i"
+    join "neededItems" as "n" using ("itemId")
+    join  "Users" as "u" using ("userId")
+    where "u"."userId" = $1;
+  `;
+
+  const params = [userId];
+
+  db.query(sql, params)
+    .then(results => {
+      const items = results.rows;
+      res.json(items);
     })
     .catch(err => next(err));
 });
