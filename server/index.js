@@ -571,6 +571,53 @@ app.delete('/api/deleteNeededItems', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/transferToStocked/:neededItemId', (req, res, next) => {
+  const userId = 1;
+  const id = Number(req.params.neededItemId);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({
+      error: 'neededItemId must be a positive integer'
+    });
+  }
+
+  const { quantity, measurementUnit } = req.body;
+
+  const sql = `
+  delete from "neededItems"
+    where "userId" = $1
+    and "neededItemId" = $2
+  returning "itemId";
+  `;
+
+  const params = [userId, id];
+  db.query(sql, params)
+    .then(result => {
+      const [deletedItemId] = result.rows;
+      const sql2 = `
+        update "Items"
+          set "measurementUnit" = $2
+        where "itemId" = $1
+      `;
+      const params2 = [deletedItemId.itemId, measurementUnit];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const sql3 = `
+            insert into "stockedItems" ("itemId", "userId", "quantity")
+            values($1, $2, $3)
+            returning *
+          `;
+          const params3 = [deletedItemId.itemId, userId, quantity];
+          db.query(sql3, params3)
+            .then(result3 => {
+              res.json(result3);
+            })
+            .catch(err => next(err));
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
