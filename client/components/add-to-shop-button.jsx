@@ -48,11 +48,10 @@ export default class AddToShop extends React.Component {
   submitItem() {
     const newItemRequest = {
       name: this.state.name,
-      quantity: this.state.quantity,
       measurementUnit: this.state.measurementUnit,
       foodCategory: this.state.foodCategory
     };
-    fetch('/api/newItem', {
+    fetch('/api/newNeededItem', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newItemRequest)
@@ -65,11 +64,6 @@ export default class AddToShop extends React.Component {
   }
 
   render() {
-    const measurements = ['#', '%', 'Grams', 'Lbs', 'Cups', 'mL'];
-    const measurementsList = measurements.map(measurement =>
-      <li key={measurement} ><a className="dropdown-item cursor-pointer" name={measurement} >{measurement}</a></li>
-    );
-
     const images = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
     const listItems = images.map(image => this.state.foodCategory === image
       ? <div key={image} className='col-md-3  mx-2 '>
@@ -80,7 +74,7 @@ export default class AddToShop extends React.Component {
       </div>
     );
     let goodToSubmit = true;
-    if (Number.isNaN(Number(this.state.quantity)) || this.state.name === '') {
+    if (this.state.name === '') {
       goodToSubmit = false;
     }
     return (
@@ -97,17 +91,6 @@ export default class AddToShop extends React.Component {
                 <input type="text" value={this.state.name} className="form-control"
                   placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" name="name" onChange={this.updateItemDetails} />
 
-                <input type="text" value={this.state.quantity} className="form-control my-4 w-75" placeholder="Quantity" aria-label="Quantity"
-                  aria-describedby="basic-addon1" name="quantity" onChange={this.updateItemDetails} />
-
-                <div className="dropdown w-25">
-                  <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="measurementMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                    {this.state.measurementUnit}
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="measurementMenu" onClick={this.updateMeasurementUnit}>
-                    {measurementsList}
-                  </ul>
-                </div>
                 <div className='d-flex flex-wrap justify-center'>
                   {listItems}
                 </div>
