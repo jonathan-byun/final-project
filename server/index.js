@@ -530,6 +530,47 @@ app.patch('/api/neededItemDetails/:neededItemId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/deleteNeededItems', (req, res, next) => {
+  const userId = 1;
+  const idArray = (req.body.idArray);
+  if (!idArray) {
+    res.status(400).json({
+      error: 'idArray cannot be empty'
+    });
+  }
+  const sql = `
+    delete from "neededItems"
+      where "userId" = $1
+      and "neededItemId" = any($2::int[])
+    returning *;
+  `;
+  const params = [userId, idArray];
+
+  db.query(sql, params)
+    .then(result1 => {
+      const itemId = result1.rows;
+      const deleteItemArray = [];
+      for (let i = 0; i < itemId.length; i++) {
+        deleteItemArray.push(itemId[i].itemId);
+      }
+      const sql2 = `
+        delete from "Items"
+          where "itemId" = any($1::int[])
+        returning *
+      `;
+
+      const params2 = [deleteItemArray];
+
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [deletedItem] = result2.rows;
+          res.json(deletedItem);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

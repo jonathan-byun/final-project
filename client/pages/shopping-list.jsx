@@ -15,10 +15,17 @@ export default class ShoppingList extends React.Component {
     this.showAllItems = this.showAllItems.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
     this.setCategory = this.setCategory.bind(this);
+    this.resetSelected = this.resetSelected.bind(this);
   }
 
   componentDidMount() {
     this.showAllItems();
+  }
+
+  resetSelected() {
+    this.setState({
+      selected: []
+    });
   }
 
   showAllItems() {

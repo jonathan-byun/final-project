@@ -37,7 +37,7 @@ export default class ShoppingRightOffcanvas extends React.Component {
     const deleteRequest = {
       idArray: deleteArray
     };
-    fetch('/api/deleteStockedItems', {
+    fetch('/api/deleteNeededItems', {
       method: 'delete',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(deleteRequest)
@@ -130,8 +130,8 @@ export default class ShoppingRightOffcanvas extends React.Component {
               <div className="modal-footer d-flex justify-between">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 {goodToSubmit
-                  ? <button type="button" className="btn btn-primary" data-bs-dismiss='modal' onClick={this.submitEdit} >Add</button>
-                  : <button type="button" className="btn btn-primary">Add</button>
+                  ? <button type="button" className="btn btn-primary" data-bs-dismiss='modal' onClick={this.submitEdit} >Confirm</button>
+                  : <button type="button" className="btn btn-primary"> Cannot be Empty</button>
                 }
               </div>
             </div>
