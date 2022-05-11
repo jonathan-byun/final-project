@@ -1,6 +1,6 @@
 import React from 'react';
 import Inventory from './pages/inventory';
-import parseRoute from './lib/parse-Route';
+import parseRoute from './lib/parse-route';
 import Favorites from './pages/favorites';
 import ShoppingList from './pages/shopping-list';
 
