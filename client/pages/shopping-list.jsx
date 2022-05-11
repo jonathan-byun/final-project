@@ -1,9 +1,9 @@
 import React from 'react';
 import Navbar from '../components/navbar';
 import CategoryButtons from '../components/category-buttons';
-import RightOffcanvas from '../components/right-offcanvas';
+import ShoppingRightOffcanvas from '../components/shopping-right-offcanvas';
 import AddToShop from '../components/add-to-shop-button';
-import FoodItem from '../components/food-item';
+import ShoppingListItem from '../components/shopping-list-item';
 
 export default class ShoppingList extends React.Component {
   constructor(props) {
@@ -15,6 +15,17 @@ export default class ShoppingList extends React.Component {
     this.showAllItems = this.showAllItems.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
     this.setCategory = this.setCategory.bind(this);
+    this.resetSelected = this.resetSelected.bind(this);
+  }
+
+  componentDidMount() {
+    this.showAllItems();
+  }
+
+  resetSelected() {
+    this.setState({
+      selected: []
+    });
   }
 
   showAllItems() {
@@ -30,7 +41,7 @@ export default class ShoppingList extends React.Component {
 
   setCategory(e) {
     const category = e.target.id;
-    fetch(`/api/itemsInCategory/${category}`)
+    fetch(`/api/itemsNeededInCategory/${category}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -58,15 +69,15 @@ export default class ShoppingList extends React.Component {
   render() {
     const categoryButtonsArray = (['fruits', 'veggies', 'meat', 'freezer', 'shaker', 'other']);
     const items = this.state.items;
-    const itemsList = items.map(item => this.state.selected.includes(item.stockedItemId)
-      ? <div key={item.stockedItemId} className='row justify-center'>
+    const itemsList = items.map(item => this.state.selected.includes(item.neededItemId)
+      ? <div key={item.neededItemId} className='row justify-center'>
         <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-light-beige border-solid border-color-green'>
-          <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
+          <ShoppingListItem foodItem={item} updateSelected={this.updateSelected} />
         </div>
       </div>
-      : <div key={item.stockedItemId} className='row justify-center'>
+      : <div key={item.neededItemId} className='row justify-center'>
         <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-beige'>
-          <FoodItem stockedItemId={item.stockedItemId} name={item.name} category={item.foodCategory} quantity={item.quantity} measurement={item.measurementUnit} updateSelected={this.updateSelected} />
+          <ShoppingListItem foodItem={item} updateSelected={this.updateSelected}/>
         </div>
       </div>
     );
@@ -82,7 +93,7 @@ export default class ShoppingList extends React.Component {
                 <div className='row justify-center'>
                   <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
                 </div>
-                {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
+                {this.state.selected.length > 0 && <ShoppingRightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
                 {itemsList}
               </div>
           </div>

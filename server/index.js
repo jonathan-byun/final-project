@@ -396,6 +396,228 @@ app.get('/api/neededItems', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/itemsNeededInCategory/:categoryName', (req, res, next) => {
+  const userId = 1;
+  const categoryName = req.params.categoryName;
+  const sql = `
+    select
+      "n"."neededItemId",
+      "i"."name",
+      "i"."measurementUnit",
+      "i"."foodCategory"
+    from "Items" as "i"
+    join "neededItems" as "n" using ("itemId")
+    join  "Users" as "u" using ("userId")
+    where "u"."userId" = $1
+    and "i"."foodCategory" = $2;
+  `;
+
+  const params = [userId, categoryName];
+
+  db.query(sql, params)
+    .then(results => {
+      const items = results.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/newNeededItem', (req, res, next) => {
+  const userId = 1;
+  const { name, foodCategory } = req.body;
+  if (!name) {
+    res.status(400).json({
+      error: 'Item must have name'
+    });
+  }
+  if (!foodCategory) {
+    res.status(400).json({
+      error: 'Item must have food Category'
+    });
+  }
+
+  const sql1 = `
+    insert into "Items" ("name", "measurementUnit", "foodCategory")
+    values ($1, 'oz', $2)
+    returning *
+  `;
+  const params1 = [name, foodCategory];
+
+  db.query(sql1, params1)
+    .then(result1 => {
+      const [newItem] = result1.rows;
+      const sql2 = `
+        insert into "neededItems" ("userId", "itemId")
+        values ($1, $2)
+        returning *
+      `;
+
+      const params2 = [userId, newItem.itemId];
+
+      db.query(sql2, params2)
+        .then(result => {
+          const [newNeededItem] = result.rows;
+          res.json(newNeededItem);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/neededItemAt/:neededItemId', (req, res, next) => {
+  const userId = 1;
+  const neededItemId = req.params.neededItemId;
+  if (!Number.isInteger(Number(neededItemId)) || neededItemId < 1) {
+    res.status(400).json({
+      error: 'neededItemId must be a positive integer'
+    });
+  }
+  const sql = `
+    select
+      "i"."name",
+      "i"."foodCategory"
+    from "Items" as "i"
+    join "neededItems" as "n" using ("itemId")
+    join "Users" as "u" using ("userId")
+    where "u"."userId" = $1
+    and "n"."neededItemId" = $2;
+  `;
+
+  const params = [userId, neededItemId];
+
+  db.query(sql, params)
+    .then(results => {
+      const [items] = results.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.patch('/api/neededItemDetails/:neededItemId', (req, res, next) => {
+  const userId = 1;
+  const id = Number(req.params.neededItemId);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({
+      error: 'neededItemId must be a positive integer'
+    });
+  }
+  const { name, foodCategory } = req.body;
+  const sql = `
+    select
+      "itemId"
+    from "neededItems"
+    where "neededItemId" = $1
+    and "userId" = $2;
+  `;
+  const params = [id, userId];
+
+  db.query(sql, params)
+    .then(result1 => {
+      const [newItem] = result1.rows;
+      const sql2 = `
+        update "Items"
+          set "name" = $2,
+          "foodCategory" = $3
+        where "itemId" = $1
+        returning *;
+      `;
+      const params2 = [newItem.itemId, name, foodCategory];
+      db.query(sql2, params2)
+        .then(result2 => {
+          res.json({ updated: result2.rows[0] });
+        });
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/deleteNeededItems', (req, res, next) => {
+  const userId = 1;
+  const idArray = (req.body.idArray);
+  if (!idArray) {
+    res.status(400).json({
+      error: 'idArray cannot be empty'
+    });
+  }
+  const sql = `
+    delete from "neededItems"
+      where "userId" = $1
+      and "neededItemId" = any($2::int[])
+    returning *;
+  `;
+  const params = [userId, idArray];
+
+  db.query(sql, params)
+    .then(result1 => {
+      const itemId = result1.rows;
+      const deleteItemArray = [];
+      for (let i = 0; i < itemId.length; i++) {
+        deleteItemArray.push(itemId[i].itemId);
+      }
+      const sql2 = `
+        delete from "Items"
+          where "itemId" = any($1::int[])
+        returning *
+      `;
+
+      const params2 = [deleteItemArray];
+
+      db.query(sql2, params2)
+        .then(result2 => {
+          const [deletedItem] = result2.rows;
+          res.json(deletedItem);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/transferToStocked/:neededItemId', (req, res, next) => {
+  const userId = 1;
+  const id = Number(req.params.neededItemId);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(400).json({
+      error: 'neededItemId must be a positive integer'
+    });
+  }
+
+  const { quantity, measurementUnit } = req.body;
+
+  const sql = `
+  delete from "neededItems"
+    where "userId" = $1
+    and "neededItemId" = $2
+  returning "itemId";
+  `;
+
+  const params = [userId, id];
+  db.query(sql, params)
+    .then(result => {
+      const [deletedItemId] = result.rows;
+      const sql2 = `
+        update "Items"
+          set "measurementUnit" = $2
+        where "itemId" = $1
+      `;
+      const params2 = [deletedItemId.itemId, measurementUnit];
+      db.query(sql2, params2)
+        .then(result2 => {
+          const sql3 = `
+            insert into "stockedItems" ("itemId", "userId", "quantity")
+            values($1, $2, $3)
+            returning *
+          `;
+          const params3 = [deletedItemId.itemId, userId, quantity];
+          db.query(sql3, params3)
+            .then(result3 => {
+              res.json(result3);
+            })
+            .catch(err => next(err));
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
