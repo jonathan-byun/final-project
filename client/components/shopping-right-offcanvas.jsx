@@ -108,7 +108,7 @@ export default class ShoppingRightOffcanvas extends React.Component {
                 <a data-bs-toggle="modal" data-bs-target="#editModal" onClick={this.updateStatevalue} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Edit</a>
               </div>
               <div className='d-flex justify-center'>
-                <a className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
+                <a data-bs-target="#transferModal" className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
               </div>
             </div>}
             <div className='d-flex justify-center w-100'>
@@ -121,6 +121,29 @@ export default class ShoppingRightOffcanvas extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="editModalLabel">Edit Item</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body row align-center justify-center">
+                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" name="name" onChange={this.updateItemDetails} />
+                <div className='d-flex flex-wrap justify-center'>
+                  {listItems}
+                </div>
+              </div>
+              <div className="modal-footer d-flex justify-between">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                {goodToSubmit
+                  ? <button type="button" className="btn btn-primary" data-bs-dismiss='modal' onClick={this.submitEdit} >Confirm</button>
+                  : <button type="button" className="btn btn-primary"> Cannot be Empty</button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal fade" id="transferModal" tabIndex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="transferModalLabel">Edit Item</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body row align-center justify-center">
