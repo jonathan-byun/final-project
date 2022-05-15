@@ -15,6 +15,22 @@ export default class ShoppingRightOffcanvas extends React.Component {
     this.updateStatevalue = this.updateStatevalue.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.transferToStocked = this.transferToStocked.bind(this);
+  }
+
+  transferToStocked() {
+    const transferItem = {
+      quantity: this.state.quantity,
+      measurementUnit: this.state.measurementUnit
+    };
+    fetch(`/api/transferToStocked/${this.props.numberSelected}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(transferItem)
+    })
+      .then(res => res.json())
+      .then(data => this.props.showAllItems())
+      .catch(err => console.error(err));
   }
 
   submitEdit() {
@@ -96,6 +112,14 @@ export default class ShoppingRightOffcanvas extends React.Component {
     if (Number.isNaN(Number(this.state.quantity)) || this.state.name === '') {
       goodToSubmit = false;
     }
+    let goodToTransfer = true;
+    if (Number.isNaN(Number(this.state.quantity)) || this.state.quantity < 1) {
+      goodToTransfer = false;
+    }
+    const measurements = ['#', '%', 'Grams', 'Lbs', 'Cups', 'mL'];
+    const measurementsList = measurements.map(measurement =>
+      <li key={measurement} ><a className="dropdown-item cursor-pointer" name={measurement} >{measurement}</a></li>
+    );
     return (
       <div>
         <div className="offcanvas offcanvas-end show visible" data-bs-scroll="true" data-bs-backdrop="false" tabIndex="-1" id="offcanvasScrolling" aria-labelledby="editOffCanvas">
@@ -108,7 +132,7 @@ export default class ShoppingRightOffcanvas extends React.Component {
                 <a data-bs-toggle="modal" data-bs-target="#editModal" onClick={this.updateStatevalue} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Edit</a>
               </div>
               <div className='d-flex justify-center'>
-                <a data-bs-target="#transferModal" className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
+                <a data-bs-toggle="modal" data-bs-target="#transferModal" className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
               </div>
             </div>}
             <div className='d-flex justify-center w-100'>
@@ -143,20 +167,25 @@ export default class ShoppingRightOffcanvas extends React.Component {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="transferModalLabel">Edit Item</h5>
+                <h5 className="modal-title" id="transferModalLabel">How much did you buy?</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body row align-center justify-center">
-                <input type="text" value={this.state.name} className="form-control" placeholder="Item name" aria-label="Item name" aria-describedby="basic-addon1" name="name" onChange={this.updateItemDetails} />
-                <div className='d-flex flex-wrap justify-center'>
-                  {listItems}
+                <input type="text" value={this.state.quantity} className="form-control my-4 w-75" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" name="quantity" onChange={this.updateItemDetails} />
+                <div className="dropdown w-25">
+                  <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="measurementMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    {this.state.measurementUnit}
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="measurementMenu" onClick={this.updateMeasurementUnit}>
+                    {measurementsList}
+                  </ul>
                 </div>
               </div>
               <div className="modal-footer d-flex justify-between">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {goodToSubmit
-                  ? <button type="button" className="btn btn-primary" data-bs-dismiss='modal' onClick={this.submitEdit} >Confirm</button>
-                  : <button type="button" className="btn btn-primary"> Cannot be Empty</button>
+                {goodToTransfer
+                  ? <button type="button" className="btn btn-primary" data-bs-dismiss='modal' onClick={this.transferToStocked} >Confirm</button>
+                  : <button type="button" className="btn btn-primary"> Must buy &gt; 1</button>
                 }
               </div>
             </div>
