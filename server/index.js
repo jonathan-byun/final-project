@@ -621,14 +621,6 @@ app.delete('/api/transferToStocked/:neededItemId', (req, res, next) => {
 app.post('/api/addToShop', (req, res, next) => {
   const userId = 1;
   const { idArray } = req.body;
-  let submitString = `(${userId}, ${idArray[0]}), `;
-  for (let i = 1; i < idArray.length; i++) {
-    if (i === idArray.length - 1) {
-      submitString = submitString + `(${userId}, ${idArray[i]})`;
-    } else {
-      submitString = submitString + `(${userId}, ${idArray[i]}), `;
-    }
-  }
   const checkSql = `
     select
      "itemId"
@@ -643,7 +635,6 @@ app.post('/api/addToShop', (req, res, next) => {
       for (let i = 0; i < ids.length; i++) {
         existingIds.push(ids[i].itemId);
       }
-      res.json(ids);
       const getItemIdsSql = `
         select
           "itemId"
@@ -665,6 +656,26 @@ app.post('/api/addToShop', (req, res, next) => {
               finalArray.push(transferringIdsArray[i]);
             }
           }
+          if (finalArray.length < 1) {
+            res.json('already in needed list');
+          }
+          let submitString = `(${userId}, ${finalArray[0]})`;
+          if (finalArray.length > 1) {
+            submitString = '(' + submitString;
+          }
+          for (let i = 1; i < finalArray.length; i++) {
+            if (i === finalArray.length - 1) {
+              submitString = submitString + ` ,(${userId}, ${finalArray[i]}))`;
+            } else {
+              submitString = submitString + ` ,(${userId}, ${finalArray[i]})`;
+            }
+          }
+          const sql = `
+            insert into "neededItems" ("userId", "itemId")
+            values ${submitString}
+          `;
+          db.query(sql)
+            .catch(err => next(err));
         })
         .catch(err => next(err));
     })

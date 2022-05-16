@@ -120,7 +120,7 @@ export default class Inventory extends React.Component {
       .catch(err => console.error(err));
   }
 
-  addToShop(e) {
+  addToShop() {
     const requestBody = {
       idArray: this.state.selected
     };
@@ -133,7 +133,7 @@ export default class Inventory extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-
+        this.resetSelected();
       })
       .catch(err => console.error(err));
   }
