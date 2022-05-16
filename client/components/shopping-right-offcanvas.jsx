@@ -29,7 +29,10 @@ export default class ShoppingRightOffcanvas extends React.Component {
       body: JSON.stringify(transferItem)
     })
       .then(res => res.json())
-      .then(data => this.props.showAllItems())
+      .then(data => {
+        this.props.showAllItems();
+        this.props.resetSelected();
+      })
       .catch(err => console.error(err));
   }
 

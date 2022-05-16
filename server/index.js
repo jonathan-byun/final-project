@@ -618,6 +618,63 @@ app.delete('/api/transferToStocked/:neededItemId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/addToShop', (req, res, next) => {
+  const userId = 1;
+  const { idArray } = req.body;
+  let submitString = `(${userId}, ${idArray[0]}), `;
+  for (let i = 1; i < idArray.length; i++) {
+    if (i === idArray.length - 1) {
+      submitString = submitString + `(${userId}, ${idArray[i]})`;
+    } else {
+      submitString = submitString + `(${userId}, ${idArray[i]}), `;
+    }
+  }
+  const checkSql = `
+    select
+     "itemId"
+    from "neededItems"
+    where "userId" = $1;
+  `;
+  const params = [userId];
+  db.query(checkSql, params)
+    .then(results => {
+      const ids = results.rows;
+      const existingIds = [];
+      for (let i = 0; i < ids.length; i++) {
+        existingIds.push(ids[i].itemId);
+      }
+      res.json(ids);
+      const getItemIdsSql = `
+        select
+          "itemId"
+        from "stockedItems"
+        where "userId" = $1
+        and "stockedItemId" = any($2::int[]);
+      `;
+      const getItemIdsParams = [userId, idArray];
+      db.query(getItemIdsSql, getItemIdsParams)
+        .then(result2 => {
+          const transferringIds = result2.rows;
+          const transferringIdsArray = [];
+          for (let i = 0; i < transferringIds.length; i++) {
+            transferringIdsArray.push(transferringIds[i].itemId);
+          }
+          const finalArray = [];
+          for (let i = 0; i < transferringIdsArray.length; i++) {
+            if (existingIds.indexOf(transferringIdsArray[i]) === -1) {
+              finalArray.push(transferringIdsArray[i]);
+            }
+          }
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+  // const sql = `
+  //  insert into "neededItems" ("userId","itemId")
+  //  values ${submitString}
+  // `;
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
