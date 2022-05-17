@@ -46,6 +46,7 @@ CREATE TABLE "plannedRecipes" (
 	"plannedRecipeId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"recipeId" integer NOT NULL,
+  "dayOfWeek" TEXT NOT NULL,
 	CONSTRAINT "plannedRecipes_pk" PRIMARY KEY ("plannedRecipeId")
 ) WITH (
   OIDS=FALSE

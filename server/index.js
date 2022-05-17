@@ -686,6 +686,38 @@ app.post('/api/addToShop', (req, res, next) => {
   // `;
 });
 
+app.post('/api/addToCalendar', (req, res, next) => {
+  const { favoritedRecipeId, dayOfWeek } = req.body;
+  if (dayOfWeek === null || dayOfWeek === undefined) {
+    res.json({ error: 'dayOfweek cannot be empty' });
+  }
+  const getSql = `
+    select "recipeId",
+      "userId"
+    from "favoritedRecipes"
+    where "favoritedRecipeId" = $1;
+  `;
+  const params1 = [favoritedRecipeId];
+  db.query(getSql, params1)
+    .then(result => {
+      const [recipeInfo] = result.rows;
+      const recipeId = recipeInfo.recipeId;
+      const userId = recipeInfo.userId;
+      const sql = `
+        insert into "plannedRecipes" ("userId", "recipeId", "dayOfWeek")
+        values ($1, $2, $3)
+        returning *
+      `;
+      const params = [userId, recipeId, dayOfWeek];
+      db.query(sql, params)
+        .then(result2 => {
+          res.json(result2.rows[0]);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
