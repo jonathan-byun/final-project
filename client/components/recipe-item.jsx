@@ -4,10 +4,34 @@ export default class RecipeItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: false
+      clicked: false,
+      day: 'Monday'
     };
     this.handleClick = this.handleClick.bind(this);
     this.addToFavorite = this.addToFavorite.bind(this);
+    this.addToPlanned = this.addToPlanned.bind(this);
+    this.updateDay = this.updateDay.bind(this);
+  }
+
+  updateDay(e) {
+    this.setState({
+      day: e.target.name
+    });
+  }
+
+  addToPlanned() {
+    const recipe = this.props.recipe.recipe;
+    const requestBody = {
+      recipeUri: recipe.uri,
+      dayOfWeek: this.state.day
+    };
+    fetch('/api/addNewPlanned', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    })
+      .then(res => res.json())
+      .catch(err => console.error(err));
   }
 
   addToFavorite(e) {
@@ -87,7 +111,7 @@ export default class RecipeItem extends React.Component {
 
     const planButton =
       <div buttontype='plan' className='d-flex justify-content-center'>
-        <a className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
+        <a data-bs-toggle="modal" data-bs-target="#dayOfWeekModal" className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
       </div>;
 
     const buttonsArray = [urlButton, favoriteButton, planButton];
@@ -105,6 +129,13 @@ export default class RecipeItem extends React.Component {
         <div key={recipeDetailsArray.indexOf(detail)} className='mb-4 p-2'>
           {detail}
         </div>
+      );
+    });
+
+    const daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const daysList = daysArray.map(day => {
+      return (
+        <li key={day}><a className='dropdown-item cursor-pointer' name={day}>{day}</a></li>
       );
     });
 
@@ -141,6 +172,29 @@ export default class RecipeItem extends React.Component {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn background-blue" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal fade" id="dayOfWeekModal" tabIndex="-1" aria-labelledby="dayOfWeekLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="dayOfWeekModal">Plan for What Day?</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body d-flex justify-content-center">
+                <div className="dropdown">
+                  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    {this.state.day}
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1" onClick={this.updateDay}>
+                    {daysList}
+                  </ul>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button onClick={this.addToPlanned} type="button" className="btn background-blue" data-bs-dismiss="modal">Plan!</button>
               </div>
             </div>
           </div>

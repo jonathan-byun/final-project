@@ -718,6 +718,33 @@ app.post('/api/addToCalendar', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/addNewPlanned', (req, res, next) => {
+  const userId = 1;
+  const { recipeUri, dayOfWeek } = req.body;
+  const sql = `
+    insert into "Recipes" ("recipeUri")
+    values ($1)
+    returning *
+  `;
+  const params = [recipeUri];
+  db.query(sql, params)
+    .then(result => {
+      const recipeItem = result.rows[0];
+      const sql2 = `
+        insert into "plannedRecipes" ("userId", "recipeId", "dayOfWeek")
+        values ($1, $2, $3)
+        returning *
+      `;
+      const params2 = [userId, recipeItem.recipeId, dayOfWeek];
+      db.query(sql2, params2)
+        .then(result2 => {
+          res.json(result2.rows[0]);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
