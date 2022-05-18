@@ -22,6 +22,7 @@ export default class Inventory extends React.Component {
     this.searchRecipes = this.searchRecipes.bind(this);
     this.resetResults = this.resetResults.bind(this);
     this.addToShop = this.addToShop.bind(this);
+    this.addToPlanned = this.addToPlanned.bind(this);
   }
 
   resetResults() {
@@ -136,6 +137,10 @@ export default class Inventory extends React.Component {
         this.resetSelected();
       })
       .catch(err => console.error(err));
+  }
+
+  addToPlanned(e) {
+
   }
 
   componentDidMount() {

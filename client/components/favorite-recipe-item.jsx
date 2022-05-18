@@ -90,7 +90,7 @@ export default class FavoriteRecipeItem extends React.Component {
 
     const planButton =
       <div buttontype='plan' className='d-flex justify-content-center my-2'>
-        <a className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
+        <a onClick={this.props.prep} data-favoriteid={this.props.favoriteid} className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
       </div>;
 
     return (

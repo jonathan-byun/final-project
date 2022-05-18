@@ -6,10 +6,14 @@ export default class Favorites extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      showModal: false,
+      itemForPlan: 0
     };
     this.showFavorites = this.showFavorites.bind(this);
     this.removefromFavorite = this.removefromFavorite.bind(this);
+    this.prepForPlan = this.prepForPlan.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   removefromFavorite(e) {
@@ -37,6 +41,25 @@ export default class Favorites extends React.Component {
       .catch(err => console.error(err));
   }
 
+  prepForPlan(e) {
+    this.setState({
+      showModal: true,
+      itemForPlan: e.target.dataset.favoriteid
+    });
+  }
+
+  addToPlanned(e) {
+
+  }
+
+  closeModal(e) {
+    if (e.target.className === 'modal d-block' || e.target.className === 'btn-close' || e.target.className === 'btn btn-secondary') {
+      this.setState({
+        showModal: false
+      });
+    }
+  }
+
   componentDidMount() {
     this.showFavorites();
   }
@@ -45,7 +68,7 @@ export default class Favorites extends React.Component {
     const favoriteRecipesList = this.state.items.map(result => {
       return (
         <div key={result.favoriteId}>
-          <FavoriteRecipeItem uri={result.uri} favoriteid={result.favoriteId} removefromFavorite={this.removefromFavorite} />
+          <FavoriteRecipeItem prep={this.prepForPlan} uri={result.uri} favoriteid={result.favoriteId} removefromFavorite={this.removefromFavorite} />
         </div>
       );
     });
@@ -62,6 +85,29 @@ export default class Favorites extends React.Component {
             </div>
           </div>
         </div>
+        {this.state.showModal &&
+          <div>
+            <div className='modal-background-fade' >
+            </div>
+            <div onClick={this.closeModal} className="modal d-block" tabIndex="-1">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Modal title</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>Modal body text goes here.</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     );
   }
