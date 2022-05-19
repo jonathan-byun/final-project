@@ -5,7 +5,7 @@ export default class RecipeItem extends React.Component {
     super(props);
     this.state = {
       clicked: false,
-      day: 'Monday'
+      day: 'Mon'
     };
     this.handleClick = this.handleClick.bind(this);
     this.addToFavorite = this.addToFavorite.bind(this);
@@ -132,7 +132,7 @@ export default class RecipeItem extends React.Component {
       );
     });
 
-    const daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const daysArray = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
     const daysList = daysArray.map(day => {
       return (
         <li key={day}><a className='dropdown-item cursor-pointer' name={day}>{day}</a></li>

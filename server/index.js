@@ -745,6 +745,61 @@ app.post('/api/addNewPlanned', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/planned', (req, res, next) => {
+  const userId = 1;
+  const sql = `
+    select *
+    from "plannedRecipes" as "p"
+    join "Recipes" using ("recipeId")
+    where "p"."userId" = $1;
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const items = result.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/plannedAt/:day', (req, res, next) => {
+  const userId = 1;
+  const day = req.params.day;
+  const sql = `
+    select *
+    from "plannedRecipes" as "p"
+    join "Recipes" using ("recipeId")
+    where "p"."userId" = $1
+    and "p"."dayOfWeek" = $2
+  `;
+  const params = [userId, day];
+
+  db.query(sql, params)
+    .then(result => {
+      const items = result.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/plannedAt/:id', (req, res, next) => {
+  const userId = 1;
+  const id = req.params.id;
+  const sql = `
+    delete from "plannedRecipes"
+      where "userId" = $1
+      and "plannedRecipeId" = $2
+      returning *
+  `;
+  const params = [userId, id];
+
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

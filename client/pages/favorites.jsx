@@ -9,7 +9,7 @@ export default class Favorites extends React.Component {
       items: [],
       showModal: false,
       itemForPlan: 0,
-      day: 'Monday'
+      day: 'Mon'
     };
     this.showFavorites = this.showFavorites.bind(this);
     this.removefromFavorite = this.removefromFavorite.bind(this);
@@ -94,7 +94,7 @@ export default class Favorites extends React.Component {
       );
     });
 
-    const daysArray = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const daysArray = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
     const daysList = daysArray.map(day => {
       return (
         <li key={day}><a className='dropdown-item cursor-pointer' name={day}>{day}</a></li>

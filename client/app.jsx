@@ -3,6 +3,7 @@ import Inventory from './pages/inventory';
 import parseRoute from './lib/parse-route';
 import Favorites from './pages/favorites';
 import ShoppingList from './pages/shopping-list';
+import Calendar from './pages/calendar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -32,6 +33,9 @@ export default class App extends React.Component {
     }
     if (route.path === 'Shopping%20List') {
       return <ShoppingList />;
+    }
+    if (route.path === 'Calendar') {
+      return <Calendar />;
     }
     return <Inventory />;
   }
