@@ -20,9 +20,11 @@ export default class RecipeItem extends React.Component {
   }
 
   addToPlanned() {
-    const recipe = this.props.recipe.recipe;
+    const recipe = this.props.recipe.recipe.uri;
+    const splitUri = recipe.split('_');
+    const uri = splitUri[1];
     const requestBody = {
-      recipeUri: recipe.uri,
+      recipeUri: uri,
       dayOfWeek: this.state.day
     };
     fetch('/api/addNewPlanned', {
