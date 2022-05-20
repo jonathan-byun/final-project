@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class FavoriteRecipeItem extends React.Component {
+export default class PlannedItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,14 +83,9 @@ export default class FavoriteRecipeItem extends React.Component {
         <a className='background-green p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder' href={this.state.recipeUrl} target="_blank" rel="noopener noreferrer">Make it!</a>
       </div>;
 
-    const unfavoriteButton =
+    const unplanButton =
       <div buttontype='favorite' className='d-flex justify-content-center my-2'>
-        <a data-favoriteid={this.props.favoriteid} onClick={this.props.removefromFavorite} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Remove</a>
-      </div>;
-
-    const planButton =
-      <div buttontype='plan' className='d-flex justify-content-center my-2'>
-        <a onClick={this.props.prep} data-favoriteid={this.props.favoriteid} className='background-rose py-3 px-4 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-white'>Plan!</a>
+        <a onClick={this.props.deleteItem} data-plannedid={this.props.plannedId} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder text-black'>Remove</a>
       </div>;
 
     return (
@@ -113,8 +108,7 @@ export default class FavoriteRecipeItem extends React.Component {
               {ingredients}
               {macros}
               {urlButton}
-              {unfavoriteButton}
-              {planButton}
+              {unplanButton}
             </div>
           </div>
         }

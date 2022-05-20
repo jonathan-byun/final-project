@@ -618,6 +618,188 @@ app.delete('/api/transferToStocked/:neededItemId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/addToShop', (req, res, next) => {
+  const userId = 1;
+  const { idArray } = req.body;
+  const checkSql = `
+    select
+     "itemId"
+    from "neededItems"
+    where "userId" = $1;
+  `;
+  const params = [userId];
+  db.query(checkSql, params)
+    .then(results => {
+      const ids = results.rows;
+      const existingIds = [];
+      for (let i = 0; i < ids.length; i++) {
+        existingIds.push(ids[i].itemId);
+      }
+      const getItemIdsSql = `
+        select
+          "itemId"
+        from "stockedItems"
+        where "userId" = $1
+        and "stockedItemId" = any($2::int[]);
+      `;
+      const getItemIdsParams = [userId, idArray];
+      db.query(getItemIdsSql, getItemIdsParams)
+        .then(result2 => {
+          const transferringIds = result2.rows;
+          const transferringIdsArray = [];
+          for (let i = 0; i < transferringIds.length; i++) {
+            transferringIdsArray.push(transferringIds[i].itemId);
+          }
+          const finalArray = [];
+          for (let i = 0; i < transferringIdsArray.length; i++) {
+            if (existingIds.indexOf(transferringIdsArray[i]) === -1) {
+              finalArray.push(transferringIdsArray[i]);
+            }
+          }
+          if (finalArray.length < 1) {
+            res.json('already in needed list');
+          }
+          let submitString = `(${userId}, ${finalArray[0]})`;
+          if (finalArray.length > 1) {
+            submitString = '(' + submitString;
+          }
+          for (let i = 1; i < finalArray.length; i++) {
+            if (i === finalArray.length - 1) {
+              submitString = submitString + ` ,(${userId}, ${finalArray[i]}))`;
+            } else {
+              submitString = submitString + ` ,(${userId}, ${finalArray[i]})`;
+            }
+          }
+          const sql = `
+            insert into "neededItems" ("userId", "itemId")
+            values ${submitString}
+          `;
+          db.query(sql)
+            .catch(err => next(err));
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+  // const sql = `
+  //  insert into "neededItems" ("userId","itemId")
+  //  values ${submitString}
+  // `;
+});
+
+app.post('/api/addToCalendar', (req, res, next) => {
+  const { favoritedRecipeId, dayOfWeek } = req.body;
+  if (dayOfWeek === null || dayOfWeek === undefined) {
+    res.json({ error: 'dayOfweek cannot be empty' });
+  }
+  const getSql = `
+    select "recipeId",
+      "userId"
+    from "favoritedRecipes"
+    where "favoritedRecipeId" = $1;
+  `;
+  const params1 = [favoritedRecipeId];
+  db.query(getSql, params1)
+    .then(result => {
+      const [recipeInfo] = result.rows;
+      const recipeId = recipeInfo.recipeId;
+      const userId = recipeInfo.userId;
+      const sql = `
+        insert into "plannedRecipes" ("userId", "recipeId", "dayOfWeek")
+        values ($1, $2, $3)
+        returning *
+      `;
+      const params = [userId, recipeId, dayOfWeek];
+      db.query(sql, params)
+        .then(result2 => {
+          res.json(result2.rows[0]);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/addNewPlanned', (req, res, next) => {
+  const userId = 1;
+  const { recipeUri, dayOfWeek } = req.body;
+  const sql = `
+    insert into "Recipes" ("recipeUri")
+    values ($1)
+    returning *
+  `;
+  const params = [recipeUri];
+  db.query(sql, params)
+    .then(result => {
+      const recipeItem = result.rows[0];
+      const sql2 = `
+        insert into "plannedRecipes" ("userId", "recipeId", "dayOfWeek")
+        values ($1, $2, $3)
+        returning *
+      `;
+      const params2 = [userId, recipeItem.recipeId, dayOfWeek];
+      db.query(sql2, params2)
+        .then(result2 => {
+          res.json(result2.rows[0]);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/planned', (req, res, next) => {
+  const userId = 1;
+  const sql = `
+    select *
+    from "plannedRecipes" as "p"
+    join "Recipes" using ("recipeId")
+    where "p"."userId" = $1;
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const items = result.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/plannedAt/:day', (req, res, next) => {
+  const userId = 1;
+  const day = req.params.day;
+  const sql = `
+    select *
+    from "plannedRecipes" as "p"
+    join "Recipes" using ("recipeId")
+    where "p"."userId" = $1
+    and "p"."dayOfWeek" = $2
+  `;
+  const params = [userId, day];
+
+  db.query(sql, params)
+    .then(result => {
+      const items = result.rows;
+      res.json(items);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/plannedAt/:id', (req, res, next) => {
+  const userId = 1;
+  const id = req.params.id;
+  const sql = `
+    delete from "plannedRecipes"
+      where "userId" = $1
+      and "plannedRecipeId" = $2
+      returning *
+  `;
+  const params = [userId, id];
+
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

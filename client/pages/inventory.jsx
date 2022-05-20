@@ -21,6 +21,7 @@ export default class Inventory extends React.Component {
     this.resetSelected = this.resetSelected.bind(this);
     this.searchRecipes = this.searchRecipes.bind(this);
     this.resetResults = this.resetResults.bind(this);
+    this.addToShop = this.addToShop.bind(this);
   }
 
   resetResults() {
@@ -119,6 +120,24 @@ export default class Inventory extends React.Component {
       .catch(err => console.error(err));
   }
 
+  addToShop() {
+    const requestBody = {
+      idArray: this.state.selected
+    };
+    fetch('/api/addToShop', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.resetSelected();
+      })
+      .catch(err => console.error(err));
+  }
+
   componentDidMount() {
     this.showAllItems();
   }
@@ -159,7 +178,7 @@ export default class Inventory extends React.Component {
                 <div className='row justify-center'>
                   <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
                 </div>
-                {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
+                {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} addToShop={this.addToShop} />}
                 {itemsList}
               </div>
             }
