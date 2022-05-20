@@ -20,7 +20,9 @@ export default class PlannedItem extends React.Component {
       .then(data => {
         const edamamApiId = data.id;
         const edamamApiKey = data.key;
-        fetch(`https://api.edamam.com/api/recipes/v2/${this.props.uri}?type=public&app_id=${edamamApiId}&app_key=${edamamApiKey}`)
+        fetch(`https://api.edamam.com/api/recipes/v2/${this.props.uri}?type=public&app_id=${edamamApiId}&app_key=${edamamApiKey}`, {
+          headers: { 'Access-Control-Allow-Origin': 'https://api.edamam.com/' }
+        })
           .then(res => res.json())
           .then(data => {
             const recipe = data.recipe;
