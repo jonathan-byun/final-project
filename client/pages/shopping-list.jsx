@@ -87,7 +87,7 @@ export default class ShoppingList extends React.Component {
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
           <div>
-                <div className='row justify-center align-center fira'>
+                <div className='d-flex justify-center align-center fira'>
                   <h1 className='header col-md-2'>Shopping List</h1> <AddToShop showAllItems={this.showAllItems} />
                 </div>
                 <div className='row justify-center'>

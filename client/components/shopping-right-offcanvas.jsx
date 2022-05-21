@@ -104,10 +104,10 @@ export default class ShoppingRightOffcanvas extends React.Component {
   render() {
     const images = this.props.images;
     const listItems = images.map(image => this.state.foodCategory === image
-      ? <div key={image} className='col-md-3  mx-2 '>
+      ? <div key={image} className='col-3  mx-2 '>
         <img id={image} className='add-category-button cursor-pointer border-blue w-75' src={`./images/${image}.png`} onClick={this.categoryClicked} />
       </div>
-      : <div key={image} className='col-md-3  mx-2'>
+      : <div key={image} className='col-3  mx-2'>
         <img id={image} className='add-category-button cursor-pointer w-75 p-1' src={`./images/${image}.png`} onClick={this.categoryClicked} />
       </div>
     );
@@ -132,14 +132,14 @@ export default class ShoppingRightOffcanvas extends React.Component {
           <div className="offcanvas-body show background-light-beige  border-start border-secondary">
             {this.props.numberSelected.length < 2 && <div>
               <div className='d-flex justify-center'>
-                <a data-bs-toggle="modal" data-bs-target="#editModal" onClick={this.updateStatevalue} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Edit</a>
+                <a data-bs-toggle="modal" data-bs-target="#editModal" onClick={this.updateStatevalue} className='background-blue fw-bolder text-decoration-none cursor-pointer col-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Edit</a>
               </div>
               <div className='d-flex justify-center'>
-                <a data-bs-toggle="modal" data-bs-target="#transferModal" className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
+                <a data-bs-toggle="modal" data-bs-target="#transferModal" className='background-blue fw-bolder text-decoration-none cursor-pointer col-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Bought</a>
               </div>
             </div>}
             <div className='d-flex justify-center w-100'>
-              <a onClick={this.deleteItem} className='background-blue fw-bolder text-decoration-none cursor-pointer col-md-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
+              <a onClick={this.deleteItem} className='background-blue fw-bolder text-decoration-none cursor-pointer col-8 rounded-pill d-flex justify-center py-3 my-3 text-white transform-hover-scale-1-2'>Delete</a>
             </div>
           </div>
         </div>
