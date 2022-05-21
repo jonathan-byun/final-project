@@ -83,7 +83,7 @@ export default class AddButton extends React.Component {
       <li key={measurement} ><a className="dropdown-item cursor-pointer" name={measurement} >{measurement}</a></li>
     );
     return (
-      <div className='col-md-1'>
+      <div className='col-1 mx-4 mx-lg-1'>
         <a className='add-button cursor-pointer text-align-center' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={this.resetState}>Add</a>
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
