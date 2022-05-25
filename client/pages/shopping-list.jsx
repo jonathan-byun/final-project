@@ -10,7 +10,8 @@ export default class ShoppingList extends React.Component {
     super(props);
     this.state = {
       items: [],
-      selected: []
+      selected: [],
+      loading: true
     };
     this.showAllItems = this.showAllItems.bind(this);
     this.updateSelected = this.updateSelected.bind(this);
@@ -33,19 +34,24 @@ export default class ShoppingList extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({
-          items: data
+          items: data,
+          loading: false
         });
       })
       .catch(err => console.error(err));
   }
 
   setCategory(e) {
+    this.setState({
+      loading: true
+    });
     const category = e.target.id;
     fetch(`/api/itemsNeededInCategory/${category}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
-          items: data
+          items: data,
+          loading: false
         });
       })
       .catch(err => console.error(err));
@@ -77,7 +83,7 @@ export default class ShoppingList extends React.Component {
       </div>
       : <div key={item.neededItemId} className='row justify-center'>
         <div className='width-80 row align-center border-radius-2rem margin-1rem justify-between background-beige'>
-          <ShoppingListItem foodItem={item} updateSelected={this.updateSelected}/>
+          <ShoppingListItem foodItem={item} updateSelected={this.updateSelected} />
         </div>
       </div>
     );
@@ -86,16 +92,23 @@ export default class ShoppingList extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
-          <div>
-                <div className='d-flex justify-center align-center fira'>
-                  <h1 className='header col-md-2'>Shopping List</h1> <AddToShop showAllItems={this.showAllItems} />
-                </div>
-                <div className='row justify-center'>
-                  <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
-                </div>
-                {this.state.selected.length > 0 && <ShoppingRightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
-                {itemsList}
+            <div>
+              <div className='d-flex justify-center align-center fira'>
+                <h1 className='header col-md-2'>Shopping List</h1> <AddToShop showAllItems={this.showAllItems} />
               </div>
+              <div className='row justify-center'>
+                <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
+              </div>
+              {this.state.loading
+                ? <div className='d-flex justify-content-center'><div className="lds-dual-ring"></div></div>
+                : <div>
+                  {this.state.selected.length > 0 && <ShoppingRightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
+                  {itemsList}
+                </div>
+              }
+
+            </div>
+
           </div>
         </div>
       </div>
