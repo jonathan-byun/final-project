@@ -9,7 +9,8 @@ export default class Favorites extends React.Component {
       items: [],
       showModal: false,
       itemForPlan: 0,
-      day: 'Mon'
+      day: 'Mon',
+      loading: true
     };
     this.showFavorites = this.showFavorites.bind(this);
     this.removefromFavorite = this.removefromFavorite.bind(this);
