@@ -9,7 +9,8 @@ export default class PlannedItem extends React.Component {
       imgUrl: '',
       ingredients: [],
       recipeUrl: '',
-      macros: []
+      macros: [],
+      loading: true
     };
     this.handleClick = this.handleClick.bind(this);
   }
