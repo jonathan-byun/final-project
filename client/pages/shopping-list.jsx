@@ -100,7 +100,7 @@ export default class ShoppingList extends React.Component {
                 <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
               </div>
               {this.state.loading
-                ? <div className='d-flex justify-content-center'><div className="lds-dual-ring"></div></div>
+                ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
                 : <div>
                   {this.state.selected.length > 0 && <ShoppingRightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} />}
                   {itemsList}

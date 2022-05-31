@@ -35,7 +35,8 @@ export default class PlannedItem extends React.Component {
               recipeUrl: recipe.url,
               calories: recipe.calories,
               macros: [macro.CHOCDF, macro.CHOLE, macro.FAT, macro.PROCNT, macro.NA],
-              yield: recipe.yield
+              yield: recipe.yield,
+              loading: false
             });
           })
           .catch(err => console.error(err));
@@ -95,14 +96,17 @@ export default class PlannedItem extends React.Component {
       <div>
         <div className='row justify-center'>
           <div className='width-80 d-flex align-center border-radius-2rem mt-1 background-beige cursor-pointer' onClick={this.handleClick}>
-            <div className='d-flex align-center h-100 py-4 justify-content-center'>
-              <div className='col-md-2'>
-                <img className='rounded w-100 h-100' src={this.state.imgUrl}></img>
+            {this.state.loading
+              ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
+              : <div className='d-flex align-center h-100 py-4 justify-content-center'>
+                <div className='col-md-2'>
+                  <img className='rounded w-100 h-100' src={this.state.imgUrl}></img>
+                </div>
+                <h1 className='no-select d-flex justify-content-center mx-4 col-md'>
+                  {this.state.name}
+                </h1>
               </div>
-              <h1 className='no-select d-flex justify-content-center mx-4 col-md'>
-                {this.state.name}
-              </h1>
-            </div>
+            }
           </div>
         </div>
         {this.state.clicked &&

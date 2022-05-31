@@ -100,7 +100,7 @@ export default class FavoriteRecipeItem extends React.Component {
         <div className='row justify-center'>
           <div className='width-80 d-flex align-center border-radius-2rem mt-1 background-beige cursor-pointer' onClick={this.handleClick}>
             {this.state.loading
-              ? <div className='d-flex justify-content-center'><div className="lds-dual-ring"></div></div>
+              ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
               : <div className='d-flex align-center h-100 py-4 justify-content-center'>
                 <div className='col-md-2'>
                   <img className='rounded w-100 h-100' src={this.state.imgUrl}></img>
