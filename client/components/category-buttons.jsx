@@ -27,10 +27,10 @@ export default class CategoryButtons extends React.Component {
     const images = this.props.images;
     const listItems = images.map(image => this.state.category === image
       ? <div key={image} className='column-eighth row align-center'>
-        <img id={image} className='category-button cursor-pointer background-lighter-rose' src={`./images/${image}.png`} onClick={this.categoryClicked} />
+        <img id={image} className='category-button cursor-pointer background-lighter-rose' src={`./images/${image}.webp`} onClick={this.categoryClicked} />
         </div>
       : <div key={image} className='column-eighth row align-center'>
-        <img id={image} className='category-button cursor-pointer' src={`./images/${image}.png`} onClick={this.categoryClicked} />
+        <img id={image} className='category-button cursor-pointer' src={`./images/${image}.webp`} onClick={this.categoryClicked} />
         </div>
     );
     return (

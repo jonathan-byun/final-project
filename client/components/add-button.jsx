@@ -68,10 +68,10 @@ export default class AddButton extends React.Component {
     const images = this.props.images;
     const listItems = images.map(image => this.state.foodCategory === image
       ? <div key={image} className='col-md-3  mx-2 '>
-        <img id={image} className='add-category-button cursor-pointer border-blue w-75' src={`./images/${image}.png`} onClick={this.categoryClicked} />
+        <img id={image} className='add-category-button cursor-pointer border-blue w-75' src={`./images/${image}.webp`} onClick={this.categoryClicked} />
       </div>
       : <div key={image} className='col-md-3  mx-2'>
-        <img id={image} className='add-category-button cursor-pointer w-75 p-1' src={`./images/${image}.png`} onClick={this.categoryClicked} />
+        <img id={image} className='add-category-button cursor-pointer w-75 p-1' src={`./images/${image}.webp`} onClick={this.categoryClicked} />
       </div>
     );
     let goodToSubmit = true;

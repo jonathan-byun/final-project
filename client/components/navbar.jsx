@@ -25,7 +25,7 @@ export default class Navbar extends React.Component {
       <div className='navbar-container row justify-center'>
         <div id='navbar' className='row justify-between align-center'>
           <div className='d-flex align-center col col-md-3'>
-            <img className='navbar-img col-3' src='./images/carrot.png' />
+            <img className='navbar-img col-3' src='./images/carrot.webp' />
             <a className='cursor-pointer home-button col-8' href='#'>
               My Kitchen
             </a>
