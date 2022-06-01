@@ -10,7 +10,8 @@ export default class FavoriteRecipeItem extends React.Component {
       ingredients: [],
       recipeUrl: '',
       macros: [],
-      loading: true
+      loading: true,
+      error: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -37,7 +38,13 @@ export default class FavoriteRecipeItem extends React.Component {
               loading: false
             });
           })
-          .catch(err => console.error(err));
+          .catch(err => {
+            console.error(err);
+            this.setState({
+              loading: false,
+              error: false
+            });
+          });
       })
       .catch(err => console.error(err));
   }
@@ -101,14 +108,19 @@ export default class FavoriteRecipeItem extends React.Component {
           <div className='width-80 d-flex align-center border-radius-2rem mt-1 background-beige cursor-pointer' onClick={this.handleClick}>
             {this.state.loading
               ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
-              : <div className='d-flex align-center h-100 py-4 justify-content-center'>
-                <div className='col-md-2'>
-                  <img className='rounded w-100 h-100' src={this.state.imgUrl}></img>
+              : <div>
+              {this.state.error
+                ? <div>Oops looks like an error try again later </div>
+                : <div className='d-flex align-center h-100 py-4 justify-content-center'>
+                  <div className='col-md-2'>
+                    <img className='rounded w-100 h-100' src={this.state.imgUrl}></img>
+                  </div>
+                  <h1 className='no-select d-flex justify-content-center mx-4 col-md'>
+                    {this.state.name}
+                  </h1>
                 </div>
-                <h1 className='no-select d-flex justify-content-center mx-4 col-md'>
-                  {this.state.name}
-                </h1>
-              </div>
+              }
+            </div>
             }
           </div>
         </div>

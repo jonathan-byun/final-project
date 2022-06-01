@@ -37,7 +37,7 @@ export default class FoodItem extends React.Component {
   }
 
   render() {
-    const imgUrl = `./images/${this.state.category}.png`;
+    const imgUrl = `./images/${this.state.category}.webp`;
     return (
       <div className='width-100 cursor-pointer row my-3 align-center justify-content-center'>
         <div id={this.state.stockedItemId} className='row align-center col-md col-12 h-100 py-4' onClick={this.props.updateSelected}>

@@ -13,7 +13,8 @@ export default class Inventory extends React.Component {
       items: [],
       selected: [],
       results: [],
-      loading: true
+      loading: true,
+      error: false
     };
 
     this.setCategory = this.setCategory.bind(this);
