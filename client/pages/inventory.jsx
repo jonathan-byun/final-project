@@ -62,9 +62,19 @@ export default class Inventory extends React.Component {
               results: data.hits
             });
           })
-          .catch(err => console.error(err));
+          .catch(err => {
+            console.error(err);
+            this.setState({
+              error: true
+            });
+          });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   resetSelected() {
@@ -82,7 +92,12 @@ export default class Inventory extends React.Component {
           items: data
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   showAllItems() {
@@ -94,7 +109,12 @@ export default class Inventory extends React.Component {
           loading: false
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   updateSelected(e) {
@@ -120,7 +140,12 @@ export default class Inventory extends React.Component {
       },
       body: JSON.stringify()
     })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   addToShop() {
@@ -138,7 +163,12 @@ export default class Inventory extends React.Component {
       .then(data => {
         this.resetSelected();
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   componentDidMount() {
@@ -166,28 +196,38 @@ export default class Inventory extends React.Component {
         <Navbar />
         <div className='background-rose row justify-center min-height-100'>
           <div className='width-80 background-tan'>
-            {this.state.results.length > 1
-              ? <div>
-                <div className='d-flex justify-content-center align-center'>
-                  <h1 className='header col-md-4'>Anything Good?</h1>
-                  <a onClick={this.resetResults} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder back-button'>Back</a>
+            {this.state.error
+              ? <div className='d-flex justify-content-center mt-5'>
+                <div className='w-75 background-light-beige border border-top-0 border-secondary p-3'>
+                  Oops looks like an error please try again later
                 </div>
-                {recipeItemList}
               </div>
               : <div>
-                {this.state.loading
-                  ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
-                  : <div>
-                    <div className='d-flex justify-center align-center fira'>
-                      <h1 className='header col-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
+                {this.state.results.length > 1
+                  ? <div>
+                    <div className='d-flex justify-content-center align-center'>
+                      <h1 className='header col-md-4'>Anything Good?</h1>
+                      <a onClick={this.resetResults} className='background-blue p-3 rounded-pill cursor-pointer transform-hover-scale-1-2 text-decoration-none fira fw-bolder back-button'>Back</a>
                     </div>
-                    <div className='row justify-center'>
-                      <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
-                    </div>
-                    {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} addToShop={this.addToShop} />}
-                    {itemsList}
+                    {recipeItemList}
                   </div>
-                }</div>}
+                  : <div>
+                    {this.state.loading
+                      ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
+                      : <div>
+                        <div className='d-flex justify-center align-center fira'>
+                          <h1 className='header col-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
+                        </div>
+                        <div className='row justify-center'>
+                          <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
+                        </div>
+                        {this.state.selected.length > 0 && <RightOffcanvas numberSelected={this.state.selected} images={categoryButtonsArray} resetSelected={this.resetSelected} showAllItems={this.showAllItems} searchRecipes={this.searchRecipes} addToShop={this.addToShop} />}
+                        {itemsList}
+                      </div>
+                    }
+                  </div>
+                }
+              </div>}
           </div>
         </div>
       </div>
