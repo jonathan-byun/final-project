@@ -17,6 +17,19 @@ https://recipize-my-kitchen.herokuapp.com/
 - Heroku
 - Postgresql
 
+## Features
+- User can add food item to inventory
+- User can increment/decrement quantity of food item
+- User can search recipes that use food items selected
+- User can edit food items
+- User can plan searched recipes into the calendar
+- User can add food items to shopping list
+- User can add shopping list item to food items
+- User can favorite recipes
+- User can plan favorited recipes into the calendar
+- User can see recipe title and details by clicking on the recipe item
+- User can see the recipe website by clicking the provided link
+
 ## GIF
 ![alt text](./server/public/images/feature1.gif "feature Gif 1") 
 
