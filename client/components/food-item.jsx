@@ -44,11 +44,11 @@ export default class FoodItem extends React.Component {
           <div className='col-md-2 col-4'>
             <img className='food-item-img' src={imgUrl}></img>
           </div>
-          <div className='food-item-name no-select fs-2 col-4 col-md-2 ms-1 justify-content-center d-flex'>
+          <div className='food-item-name no-select fs-2 col-4 col-2 ms-1 justify-content-center d-flex'>
             {this.state.name}
           </div>
         </div>
-        <div className='row align-center col-5 space-around'>
+        <div className='row align-center col-sm-5 space-around'>
           <div id='minus-button' className='rounded-circle background-green cursor-pointer col-2 transform-hover-scale-1-2 active-transform' onClick={this.changeQuantity} >
             <i className="fas fa-minus fa-xl row justify-center py-4"></i>
           </div>
