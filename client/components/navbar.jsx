@@ -44,7 +44,7 @@ export default class Navbar extends React.Component {
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><NavbarButton name='Inventory' /></li>
                 <li><NavbarButton name='Favorites' /></li>
-                <li><NavbarButton name='Shopping List' /></li>
+                <li><NavbarButton name='Shopping' /></li>
                 <li><NavbarButton name='Calendar' /></li>
               </ul>
             </div>

@@ -216,7 +216,7 @@ export default class Inventory extends React.Component {
                       ? <div className='d-flex justify-content-center w-100'><div className="lds-dual-ring"></div></div>
                       : <div>
                         <div className='d-flex justify-center align-center fira'>
-                          <h1 className='header col-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
+                          <h1 className='header col-sm-2'>Inventory</h1> <AddButton images={categoryButtonsArray} showAllItems={this.showAllItems} />
                         </div>
                         <div className='row justify-center'>
                           <CategoryButtons images={categoryButtonsArray} setCategory={this.setCategory} showAllItems={this.showAllItems} />
